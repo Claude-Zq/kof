@@ -29,7 +29,7 @@ let gameObjectsFrame = (timestamp)=>{
             obj.start();
             obj.hasCallStart = true;
         }else{
-            obj.timedelta - timestamp - lastTimestamp;
+            obj.timedelta = timestamp - lastTimestamp;
             obj.update();
         }
     }

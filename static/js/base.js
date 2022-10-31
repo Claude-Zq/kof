@@ -1,5 +1,7 @@
 import { GameMap } from "./game_map/base.js";
 import { Player } from "./player/base.js";
+export const GRAVITY = 50; //重力加速度
+
 export class KOF{
     constructor(id){
         this.$kof = $('#'+id);
@@ -11,7 +13,8 @@ export class KOF{
                 y:0,
                 width: 120,
                 height: 200,
-                color: 'blue',
+                speedx:400,
+                speedy:-1000,
             }),
 
             new Player(this,{
@@ -20,7 +23,8 @@ export class KOF{
                 y:0,
                 width: 120,
                 height: 200,
-                color:"red",
+                speedx:400,
+                speedy:-1000, 
             })
         ]
 

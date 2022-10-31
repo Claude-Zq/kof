@@ -1,7 +1,7 @@
 import { GameMap } from "./game_map/base.js";
 import { Player } from "./player/base.js";
-export const GRAVITY = 50; //重力加速度
-
+export const GRAVITY = 5000; //重力加速度
+export const GROUND_HEIGHT = 50;
 export class KOF{
     constructor(id){
         this.$kof = $('#'+id);

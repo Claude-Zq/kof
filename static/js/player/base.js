@@ -1,5 +1,6 @@
 import { GameObject } from "../game_object/base.js";
 import { GRAVITY } from "../base.js";
+import {GROUND_HEIGHT} from "../base.js";
 
 export class Player extends GameObject{
     constructor(root,info) {
@@ -31,12 +32,12 @@ export class Player extends GameObject{
     }
 
     update_move(){
-        this.vy += GRAVITY;
+        this.vy += GRAVITY*this.timedelta/1000;
         this.x +=this.vx* this.timedelta/1000;
         this.y += this.vy * this.timedelta/1000;
        
-        if(this.y > this.ctx.canvas.height-this.height-50){
-            this.y = this.ctx.canvas.height - this.height-50;
+        if(this.y > this.ctx.canvas.height-this.height-GROUND_HEIGHT){
+            this.y = this.ctx.canvas.height-this.height-GROUND_HEIGHT;
             this.vy = 0;
         }
     }

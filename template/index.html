@@ -6,8 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拳皇</title>
     <link rel="stylesheet" href="/static/css/base.css">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+    <div id = "kof"></div>
+    <script type="module">
+        import {KOF} from '/static/js/base.js';
+        let kof = new KOF('kof');
+    </script>
     
 </body>
 </html>

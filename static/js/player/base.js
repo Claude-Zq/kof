@@ -126,7 +126,7 @@ export class Player extends GameObject{
         //动画相关
         this.frameCurrentCount = 0;
         this.offset_y = -50;
-        this.animationRate = 8;  
+        this.animationRate = 16;  
     }
 
     normalAttack(){

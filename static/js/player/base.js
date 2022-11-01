@@ -11,8 +11,8 @@ export class Player extends GameObject{
         this.x = info.x;
         this.y = info.y;
 
-        this.width = 100;
-        this.height = 200;
+        this.width = 140;
+        this.height = 220;
         this.vx = 0;
         this.vy = 0;
 
@@ -22,6 +22,23 @@ export class Player extends GameObject{
 
         this.ctx = this.root.gameMap.ctx;
         this.pressedKeys = this.root.controller.pressedKeys;
+        this.frameCurrentCount = 0;
+
+
+        /*
+        存放动画
+        键(字符串): 状态名
+        值：动画
+        */
+        this.animations = new Map();
+
+        this.animationRate = 5; //动画的播放速度
+        this.animationScale = 2; //动画缩放倍数
+        this.offset_y = 0; //动画偏移量
+
+
+        //存放角色的所有状态 gif的文件名必须与状态名相同
+        this.allStates = [];
 
 
         // /*
@@ -31,7 +48,7 @@ export class Player extends GameObject{
         // */
         // this.convertMap = new Map(); 
 
-        // initBasicSkill();
+        this.initBasicSkills();
         
     }
 
@@ -39,43 +56,91 @@ export class Player extends GameObject{
 
     }
 
+    initBasicSkills(){
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die"]
+    }
+
     idle(){
+
         this.status = "idle";
+        this.width = 140;
+        this.height = 220;
+
         this.vx = 0;
         this.vy = 0;
+
+        //动画相关
+        this.offset_y =  0;
+        this.animationRate = 6;
+
+        
     }
 
     forward(){
-        this.status = "forward";
-        this.vx = 400;
 
-    }
+        this.status = "forward";
+        this.width = 140;
+        this.height = 220;
+
+        this.vx = this.direction*400;
+        this.vy = 0;
+
+        //动画相关
+        this.offset_y =  10;
+        this.animationRate = 6;
+    }d
 
     backward(){
         this.status = "backward";
-        this.vx = -400;
+        this.width = 140;
+        this.height = 220;
+
+        this.vx = -this.direction*400;
+        this.vy = 0;
+
+        //动画相关
+        this.offset_y =  10;
+        this.animationRate = 6; 
     }
 
     jump(){
-        this.height = 200;
         this.status = "jump";
+        this.width = 140;
+        this.height = 220;
+        
+        this.y -= 200;
         this.vy = -2000;
 
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.animationRate = 6;  
     }
     squat(){
         this.status = "squat";
-        this.height = 50;
+        this.width = 140;
+        this.height = 150;
+        
+        this.vx = 0;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_y = -50;
+        this.animationRate = 8;  
     }
 
     normalAttack(){
+        this.animationRate = 5;
         this.status = "normalAttack";
     }
 
     attacked(){
-        this.status = "attack";
+        this.animationRate = 5;
+        this.status = "attacked";
     }
 
     die(){
+        this.animationRate = 5;
         this.status = "die";
         this.width = 10;
         this.height = 10;
@@ -105,9 +170,11 @@ export class Player extends GameObject{
             if(w){
                 this.jump();
             }else if(d){
-                this.forward();
+                if(this.direction === 1) this.forward();
+                else this.backward();
             }else if(a){
-                this.backward();
+                if(this.direction === 1) this.backward();
+                else this.forward();
             }else if(space){
                 this.normalAttack();
             }else if(s){
@@ -118,9 +185,11 @@ export class Player extends GameObject{
             if(w){
                 this.jump();
             }else if(d){
-                this.forward();
+                if(this.direction === 1) this.forward();
+                else this.backward();
             }else if(a){
-                this.backward();
+                if(this.direction === 1) this.backward();
+                else this.forward();
             }else if(space){
                 this.normalAttack();
             }else if(s){
@@ -133,9 +202,11 @@ export class Player extends GameObject{
             if(w){
                 this.jump();
             }else if(d){
-                this.forward();
+                if(this.direction === 1) this.forward();
+                else this.backward();
             }else if(a){
-                this.backward();
+                if(this.direction === 1) this.backward();
+                else this.forward();
             }else if(space){
                 this.normalAttack();
             }else if(s){
@@ -180,7 +251,7 @@ export class Player extends GameObject{
     }
 
     update(){
-        if(this.id == 0) console.log(this.status);
+        // if(this.id == 0) console.log(this.status);
         this.updateStatus();
         this.updateMove();
         this.render();
@@ -189,5 +260,13 @@ export class Player extends GameObject{
     render(){
         this.ctx.fillStyle = "green";
         this.ctx.fillRect(this.x,this.y,this.width,this.height);
+
+        let obj =this.animations.get(this.status);
+        if(obj && obj.loaded){
+            let k = parseInt(this.frameCurrentCount/this.animationRate) %obj.frameCnt;
+            let image = obj.gif.frames[k].image;
+            this.ctx.drawImage(image,this.x,this.y+this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
+        }
+        this.frameCurrentCount++;
     }
 }

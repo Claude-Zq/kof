@@ -57,9 +57,14 @@ export class Player extends GameObject{
     }
 
     jump(){
+        this.height = 200;
         this.status = "jump";
         this.vy = -2000;
 
+    }
+    squat(){
+        this.status = "squat";
+        this.height = 50;
     }
 
     normalAttack(){
@@ -81,15 +86,17 @@ export class Player extends GameObject{
         if(this.staus === "die"){
             return;
         }
-        let w,a,d,space;
+        let w,a,d,s,space;
         if(this.id === 0){
             w = this.pressedKeys.has('w');
             a = this.pressedKeys.has('a');
             d = this.pressedKeys.has('d');
+            s = this.pressedKeys.has('s');
             space = this.pressedKeys.has(' ');
         }else{
             w = this.pressedKeys.has("ArrowUp");
             a = this.pressedKeys.has("ArrowLeft");
+            s = this.pressedKeys.has('ArrowDown');
             d = this.pressedKeys.has('ArrowRight');
             space = this.pressedKeys.has('Enter');
         }
@@ -103,6 +110,8 @@ export class Player extends GameObject{
                 this.backward();
             }else if(space){
                 this.normalAttack();
+            }else if(s){
+                this.squat();
             }
             
         }else if(this.status ==="forward"){
@@ -114,6 +123,8 @@ export class Player extends GameObject{
                 this.backward();
             }else if(space){
                 this.normalAttack();
+            }else if(s){
+                this.squat();
             }else{
                 this.idle();
             }
@@ -127,6 +138,8 @@ export class Player extends GameObject{
                 this.backward();
             }else if(space){
                 this.normalAttack();
+            }else if(s){
+                this.squat();
             }else{
                 this.idle();
             }
@@ -136,6 +149,11 @@ export class Player extends GameObject{
                 this.idle();
             }
             
+        }else if(this.status === "squat"){
+           if(w){
+            this.idle();
+           }
+
         }else if(this.status === "normalAttack"){
 
         }else if(this.status === "attacked"){

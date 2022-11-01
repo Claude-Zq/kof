@@ -113,7 +113,7 @@ export class Player extends GameObject{
 
         //动画相关
         this.frameCurrentCount = 0;
-        this.animationRate = 6;  
+        this.animationRate = 8;  
     }
     squat(){
         this.status = "squat";
@@ -274,10 +274,22 @@ export class Player extends GameObject{
         }
     }
 
+    updateDirection(){
+        let me = this.root.players[this.id],you = this.root.players[1-this.id];
+        if(me.x < you.x){
+            me.direction = 1;
+            you.direction = -1;
+        }else{
+            me.direction = -1;
+            you.direction= 1;
+        }
+    }
+
     update(){
         // if(this.id == 0) console.log(this.status);
         this.updateStatus();
         this.updateMove();
+        this.updateDirection();
         this.render();
     }
 
@@ -289,7 +301,17 @@ export class Player extends GameObject{
         if(obj && obj.loaded){
             let k = parseInt(this.frameCurrentCount/this.animationRate) %obj.frameCnt;
             let image = obj.gif.frames[k].image;
-            this.ctx.drawImage(image,this.x,this.y+this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
+
+            if(this.direction === 1){
+                this.ctx.drawImage(image,this.x,this.y+this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
+            }else{
+                this.ctx.save();
+                this.ctx.scale(-1,1);
+                this.ctx.translate(-this.ctx.canvas.width,0);
+                this.ctx.drawImage(image,this.ctx.canvas.width - this.x-this.width,this.y + this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
+                this.ctx.restore();
+            }
+            
         }
         this.frameCurrentCount++;
     }

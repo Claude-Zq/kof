@@ -79,7 +79,7 @@ export class Player extends GameObject{
     forward(){
 
         this.status = "forward";
-        this.width = 140;
+        this.width = 120;
         this.height = 220;
 
         this.vx = this.direction*400;
@@ -88,11 +88,11 @@ export class Player extends GameObject{
         //动画相关
         this.offset_y =  10;
         this.animationRate = 6;
-    }d
+    }
 
     backward(){
         this.status = "backward";
-        this.width = 140;
+        this.width = 120;
         this.height = 220;
 
         this.vx = -this.direction*400;
@@ -130,8 +130,19 @@ export class Player extends GameObject{
     }
 
     normalAttack(){
-        this.animationRate = 5;
         this.status = "normalAttack";
+
+        this.width = 140;
+        this.height = 220;
+
+        this.vx = 0 ;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_y =  5;
+        this.animationRate = 6; 
+        
     }
 
     attacked(){
@@ -226,6 +237,19 @@ export class Player extends GameObject{
            }
 
         }else if(this.status === "normalAttack"){
+            if(w){
+                this.jump();
+            }else if(d){
+                if(this.direction === 1) this.forward();
+                else this.backward();
+            }else if(a){
+                if(this.direction === 1) this.backward();
+                else this.forward();
+            }else if(s){
+                this.squat();
+            }else if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+                this.idle();
+            } 
 
         }else if(this.status === "attacked"){
 

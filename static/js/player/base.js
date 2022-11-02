@@ -40,7 +40,8 @@ export class Player extends GameObject{
         this.hp = 100;
         this.$hp = this.root.$kof.find(`.kof-head-hp-${this.id}>div`);
         this.$hpDiv = this.$hp.find('div');
-        this.damage = 20,
+        this.damage = 20, //攻击力
+        this.defense = 0; //防御力
 
         //攻击范围
         this.attackArea = {

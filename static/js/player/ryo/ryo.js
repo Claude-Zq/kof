@@ -13,7 +13,7 @@ export class Ryo extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist"]
     }
 
     initAnimations(){
@@ -45,6 +45,12 @@ export class Ryo extends Player{
         this.vx = 0;
         this.vy = 0;
         this.defense = 0;
+        this.attackArea = {
+            x1 : 0,
+            y1 : 0,
+            x2 : 0,
+            y2 : 0,
+        }
 
         //动画相关
         this.offset_x = 0;
@@ -119,6 +125,12 @@ export class Ryo extends Player{
     normalAttack(){
         this.status = "normalAttack";
         this.attackCount = 1;
+        this.attackArea = {
+            x1 : 90,
+            y1 : 65,
+            x2 : 210,
+            y2 : 100,
+        }
         this.defense = 0;
 
         this.width = 140;
@@ -183,9 +195,10 @@ export class Ryo extends Player{
 
     squatDefense(){
         this.status = "squatDefense";
-        this.defense = 30;
+        this.defense = 10;
         this.width = 120;
         this.height = 150;
+       
     
         this.vx = 0;
         this.vy = 0;
@@ -197,19 +210,46 @@ export class Ryo extends Player{
         this.animationRate = 16;  
     }
 
+    overLordFist(){
+        this.status ="overLordFist";
+        this.attackCount  = 1;
+        this.damage = 50;
+        this.defense = 0;
+        this.attackArea = {
+            x1 : 100, 
+            y1 : -10,
+            x2 : 560,
+            y2 : 220,
+        }
+
+        this.width = 140;
+        this.height = 220;
+
+        this.vx = 0 ;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_x = 0;
+        this.offset_y =  -85; 
+        this.animationRate = 6;
+    }
+
 
     updateStatus(){
-        let w,a,d,s,space;
+        let w,a,d,s,space,f;
         if(this.id === 0){
             w = this.pressedKeys.has('w');
             a = this.pressedKeys.has('a');
             d = this.pressedKeys.has('d');
             s = this.pressedKeys.has('s');
+            f = this.pressedKeys.has('f');
             space = this.pressedKeys.has(' ');
         }else{
             w = this.pressedKeys.has("ArrowUp");
             a = this.pressedKeys.has("ArrowLeft");
             s = this.pressedKeys.has('ArrowDown');
+            f = this.pressedKeys.has('Shift');
             d = this.pressedKeys.has('ArrowRight');
             space = this.pressedKeys.has('Enter');
         }
@@ -230,7 +270,10 @@ export class Ryo extends Player{
             }
             
         }else if(this.status ==="forward"){
-            if(w){
+            if(f){
+                this.overLordFist();
+            }
+            else if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -292,6 +335,19 @@ export class Ryo extends Player{
                 this.idle();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 50){
+                    let you = this.root.players[1-this.id];
+                    this.attackCount = 0;
+                    if(you.defense< this.damage){
+                        you.attacked();
+                    }
+                    
+                }
+            }
+        }else if(this.status === "overLordFist"){
+            if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+                this.idle();
+            }else{ 
+                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 110 && this.frameCurrentCount <= 160){
                     let you = this.root.players[1-this.id];
                     this.attackCount = 0;
                     if(you.defense< this.damage){

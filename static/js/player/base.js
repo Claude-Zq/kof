@@ -37,6 +37,8 @@ export class Player extends GameObject{
         this.offset_x = 0;
         this.offset_y = 0; //动画偏移量
 
+        this.hp = 100;
+        this.damage = 50;
 
         //攻击范围
         this.attackArea = {
@@ -168,6 +170,7 @@ export class Player extends GameObject{
     attacked(){
         this.status = "attacked";
 
+        this.hp -= this.root.players[1-this.id].damage;
         this.width = 140;
         this.height = 220;
         this.vx = 0;
@@ -181,10 +184,24 @@ export class Player extends GameObject{
     }
 
     die(){
-        this.animationRate = 5;
         this.status = "die";
-        this.width = 10;
-        this.height = 10;
+
+        this.width = 240;
+        this.height = 50;
+        this.vx = 0;
+        this.vy = 0;
+        this.attackArea = {
+            x1:0,
+            x2:0,
+            y1:0,
+            y2:0,
+        }
+
+          //动画相关
+          this.frameCurrentCount = 20;
+          this.offset_x = 0;
+          this.offset_y =  -240;
+          this.animationRate = 5;
 
     }
 
@@ -224,9 +241,6 @@ export class Player extends GameObject{
     }
 
     updateStatus(){
-        if(this.staus === "die"){
-            return;
-        }
         let w,a,d,s,space;
         if(this.id === 0){
             w = this.pressedKeys.has('w');
@@ -308,7 +322,17 @@ export class Player extends GameObject{
             this.idle();
         }else if(this.status === "attacked"){
            if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
-                this.idle();
+                this.x -= this.direction * parseInt(this.width/2);
+                if(this.hp <= 0){
+                    this.die();
+                }else{
+                    this.idle();
+                }
+                
+           }
+        }else if(this.status === "die"){
+           if(this.frameCurrentCount === 70){
+                this.frameCurrentCount--;
            }
         }
     }
@@ -332,14 +356,10 @@ export class Player extends GameObject{
     }
 
     updateDirection(){
+        if(this.status === "die") return;
         let me = this.root.players[this.id],you = this.root.players[1-this.id];
-        if(me.x < you.x){
-            me.direction = 1;
-            you.direction = -1;
-        }else{
-            me.direction = -1;
-            you.direction= 1;
-        }
+        if(me.x < you.x)me.direction = 1;
+        else me.direction = -1;
     }
 
     update(){
@@ -366,7 +386,6 @@ export class Player extends GameObject{
                 this.attackArea.y2 - this.attackArea.y1)
         }
         
-        console.log(this.offset_x);
         let obj =this.animations.get(this.status);
         if(obj && obj.loaded){
             let k = parseInt(this.frameCurrentCount/this.animationRate) %obj.frameCnt;

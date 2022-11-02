@@ -38,7 +38,9 @@ export class Player extends GameObject{
         this.offset_y = 0; //动画偏移量
 
         this.hp = 100;
-        this.damage = 50;
+        this.$hp = this.root.$kof.find(`.kof-head-hp-${this.id}>div`);
+        this.$hpDiv = this.$hp.find('div');
+        this.damage = 20,
 
         //攻击范围
         this.attackArea = {
@@ -164,6 +166,12 @@ export class Player extends GameObject{
         this.status = "attacked";
 
         this.hp -= this.root.players[1-this.id].damage;
+        this.$hpDiv.animate({
+            width: this.$hp.parent().width() * this.hp / 100
+        }, 300)
+        this.$hp.animate({
+            width: this.$hp.parent().width() * this.hp / 100
+        }, 600)
         this.width = 140;
         this.height = 220;
         this.vx = 0;

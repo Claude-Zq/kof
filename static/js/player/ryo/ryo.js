@@ -13,7 +13,7 @@ export class Ryo extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist","win"]
     }
 
     initAnimations(){
@@ -185,6 +185,8 @@ export class Ryo extends Player{
             y2:0,
         }
 
+        this.root.players[1-this.id].win();
+
           //动画相关
           this.frameCurrentCount = 20;
           this.offset_x = 0;
@@ -213,7 +215,7 @@ export class Ryo extends Player{
     overLordFist(){
         this.status ="overLordFist";
         this.attackCount  = 1;
-        this.damage = 50;
+        this.damage = 100;
         this.defense = 0;
         this.attackArea = {
             x1 : 100, 
@@ -233,6 +235,28 @@ export class Ryo extends Player{
         this.offset_x = 0;
         this.offset_y =  -85; 
         this.animationRate = 6;
+    }
+
+    win(){
+        this.status = "win";
+        this.width = 140;
+        this.height = 220;
+
+        this.vx = 0;
+        this.vy = 0;
+        this.defense = 0;
+        this.attackArea = {
+            x1 : 0,
+            y1 : 0,
+            x2 : 0,
+            y2 : 0,
+        }
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_x = 0;
+        this.offset_y =  -20;
+        this.animationRate = 15;
     }
 
 
@@ -331,7 +355,7 @@ export class Ryo extends Player{
             }
 
         }else if(this.status === "normalAttack"){
-            if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+            if(this.isAnimationOver()){
                 this.idle();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 50){
@@ -344,7 +368,7 @@ export class Ryo extends Player{
                 }
             }
         }else if(this.status === "overLordFist"){
-            if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+            if(this.isAnimationOver()){
                 this.idle();
             }else{ 
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 110 && this.frameCurrentCount <= 160){
@@ -357,7 +381,7 @@ export class Ryo extends Player{
                 }
             }
         }else if(this.status === "attacked"){
-           if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+           if(this.isAnimationOver()){
                 
                 if(this.hp <= 0){
                     this.die();
@@ -370,6 +394,10 @@ export class Ryo extends Player{
            if(this.frameCurrentCount === 70){
                 this.frameCurrentCount--;
            }
+        }else if(this.status === "win"){ 
+            if(this.isAnimationOver()){
+                this.idle();
+            } 
         }
     }
 }

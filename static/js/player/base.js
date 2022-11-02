@@ -66,6 +66,10 @@ export class Player extends GameObject{
         return true;
     }
 
+    isAnimationOver(){
+        return this.frameCurrentCount > this.animationRate*this.animations.get(this.status).frameCnt;
+    }
+
     //检测对方是否在攻击区域内
     isSuccessfuleAttack(){
          let you = this.root.players[1-this.id];
@@ -142,7 +146,6 @@ export class Player extends GameObject{
     }
 
     update(){
-        // if(this.id == 0) console.log(this.status);
         this.updateStatus();
         this.updateMove();
         this.updateDirection();

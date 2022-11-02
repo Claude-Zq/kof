@@ -1,5 +1,4 @@
 import { GameMap } from "./game_map/base.js";
-import { Player } from "./player/base.js";
 import { Controller } from "./controller/controller.js";
 import { Ryo } from "./player/ryo/ryo.js";
 export const GRAVITY = 5000;  //地面高度
@@ -31,17 +30,6 @@ export class KOF{
                 speedy:-1000, 
             })
         ]
-
-
-
-        $('#'+id).css({
-            "width":window.innerWidth,
-            "height":window.innerHeight,
-            "background-image": "url('/static/images/background/0.gif')",
-            "background-size": "100% 100%",
-            "background-position": "top",
-            "position": "absolute",
-        })
     }
 
 }

@@ -53,13 +53,6 @@ export class Player extends GameObject{
         this.allStates = [];
 
 
-        // /*
-        //    状态转移的映射
-        //    键（字符串）： 当前状态+按住的键（按ASCII码排序）
-        //    值 (函数)：新状态对应的函数
-        // */
-        // this.convertMap = new Map(); 
-
         this.initBasicSkills();
         
     }
@@ -339,9 +332,27 @@ export class Player extends GameObject{
 
     updateMove(){
         this.vy += GRAVITY*this.timedelta/1000;
-        this.x +=this.vx* this.timedelta/1000;
+
+        let you = this.root.players[1-this.id];
+        if(this.isCollision({
+            x1:this.x,
+            y1:this.y,
+            x2:this.x+this.width,
+            y2:this.y+this.height,
+
+        },{
+            x1:you.x,
+            y1:you.y,
+            x2:you.x+you.width,
+            y2:you.y+you.height,
+        }) && (you.x-this.x)*this.vx>0){ 
+
+            this.x += this.vx*this.timedelta/1000/2;
+            you.x += this.vx * this.timedelta/1000/2;
+        }else{
+            this.x +=this.vx* this.timedelta/1000;
+        }
         this.y += this.vy * this.timedelta/1000;
-       
         //防止越出下边界
         if(this.y > this.ctx.canvas.height-this.height-GROUND_HEIGHT){
             this.y = this.ctx.canvas.height-this.height-GROUND_HEIGHT;

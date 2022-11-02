@@ -34,7 +34,17 @@ export class Player extends GameObject{
 
         this.animationRate = 5; //动画的播放速度
         this.animationScale = 2; //动画缩放倍数
+        this.offset_x = 0;
         this.offset_y = 0; //动画偏移量
+
+
+        //攻击范围
+        this.attackArea = {
+            x1 : 90,
+            y1 : 65,
+            x2 : 210,
+            y2 : 100,
+        }
 
 
         //存放角色的所有状态 gif的文件名必须与状态名相同
@@ -70,6 +80,7 @@ export class Player extends GameObject{
         this.vy = 0;
 
         //动画相关
+        this.offset_x = 0;
         this.offset_y =  0;
         this.animationRate = 6;
 
@@ -86,6 +97,7 @@ export class Player extends GameObject{
         this.vy = 0;
 
         //动画相关
+        this.offset_x = 0;
         this.offset_y =  10;
         this.animationRate = 6;
     }
@@ -99,6 +111,7 @@ export class Player extends GameObject{
         this.vy = 0;
 
         //动画相关
+        this.offset_x = 0;
         this.offset_y =  10;
         this.animationRate = 6; 
     }
@@ -112,6 +125,8 @@ export class Player extends GameObject{
         this.vy = -2000;
 
         //动画相关
+        this.offset_x = 0;
+        this.offset_y = 0;
         this.frameCurrentCount = 0;
         this.animationRate = 8;  
     }
@@ -124,8 +139,9 @@ export class Player extends GameObject{
         this.vy = 0;
 
         //动画相关
-        this.frameCurrentCount = 0;
+        this.offset_x = 0;
         this.offset_y = -50;
+        this.frameCurrentCount = 0;
         this.animationRate = 16;  
     }
 
@@ -140,14 +156,28 @@ export class Player extends GameObject{
 
         //动画相关
         this.frameCurrentCount = 0;
+        this.offset_x = 0;
         this.offset_y =  5;
-        this.animationRate = 6; 
-        
+        this.animationRate = 6;
+
+        if(this.isSuccessfuleAttack()){
+            this.root.players[1-this.id].attacked();
+        }
     }
 
     attacked(){
-        this.animationRate = 5;
         this.status = "attacked";
+
+        this.width = 140;
+        this.height = 220;
+        this.vx = 0;
+        this.vy = 0;
+
+         //动画相关
+         this.frameCurrentCount = 0;
+         this.offset_x = -100;
+         this.offset_y =  5;
+         this.animationRate = 7;
     }
 
     die(){
@@ -156,6 +186,41 @@ export class Player extends GameObject{
         this.width = 10;
         this.height = 10;
 
+    }
+
+    isCollision(r1,r2){
+        if(Math.max(r1.x1,r2.x1) > Math.min(r1.x2,r2.x2)) return false;
+        if(Math.max(r1.y1,r2.y1) > Math.min(r1.y2,r2.y2)) return false;
+        return true;
+    }
+
+    //检测对方是否在攻击区域内
+    isSuccessfuleAttack(){
+         let you = this.root.players[1-this.id];
+         let youR = {
+             x1 : you.x,
+             y1:you.y,
+             x2:you.x+you.width,
+             y2:you.y + you.height,
+         }
+ 
+         let myAttack;
+         if(this.direction === 1){
+            myAttack = {
+                x1:this.x+this.attackArea.x1,
+                y1:this.y + this.attackArea.y1,
+                x2:this.x + this.attackArea.x2,
+                y2:this.y + this.attackArea.y2,
+            }
+         }else{
+           myAttack = {
+            x1:this.x + this.width-this.attackArea.x2,
+            y1 : this.y+this.attackArea.y1,
+            x2:this.x + this.width-this.attackArea.x1,
+            y2:this.y + this.attackArea.y2,
+           } 
+         }
+         return this.isCollision(myAttack,youR);
     }
 
     updateStatus(){
@@ -237,22 +302,14 @@ export class Player extends GameObject{
            }
 
         }else if(this.status === "normalAttack"){
-            if(w){
-                this.jump();
-            }else if(d){
-                if(this.direction === 1) this.forward();
-                else this.backward();
-            }else if(a){
-                if(this.direction === 1) this.backward();
-                else this.forward();
-            }else if(s){
-                this.squat();
-            }else if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
-                this.idle();
-            } 
-
+            if(this.frameCurrentCount < this.animationRate*this.animations.get(this.status).frameCnt){
+                return;
+            }
+            this.idle();
         }else if(this.status === "attacked"){
-
+           if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+                this.idle();
+           }
         }
     }
 
@@ -297,18 +354,31 @@ export class Player extends GameObject{
         this.ctx.fillStyle = "green";
         this.ctx.fillRect(this.x,this.y,this.width,this.height);
 
+        this.ctx.fillStyle = "red";
+        if(this.direction===1){
+            this.ctx.fillRect(this.x+this.attackArea.x1,this.y+this.attackArea.y1,
+                this.attackArea.x2-this.attackArea.x1,
+                this.attackArea.y2 - this.attackArea.y1,
+            )
+        }else {
+            this.ctx.fillRect(this.x +this.width- this.attackArea.x2,this.y+this.attackArea.y1,
+                this.attackArea.x2-this.attackArea.x1,
+                this.attackArea.y2 - this.attackArea.y1)
+        }
+        
+        console.log(this.offset_x);
         let obj =this.animations.get(this.status);
         if(obj && obj.loaded){
             let k = parseInt(this.frameCurrentCount/this.animationRate) %obj.frameCnt;
             let image = obj.gif.frames[k].image;
 
             if(this.direction === 1){
-                this.ctx.drawImage(image,this.x,this.y+this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
+                this.ctx.drawImage(image,this.x+this.offset_x,this.y+this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
             }else{
                 this.ctx.save();
                 this.ctx.scale(-1,1);
                 this.ctx.translate(-this.ctx.canvas.width,0);
-                this.ctx.drawImage(image,this.ctx.canvas.width - this.x-this.width,this.y + this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
+                this.ctx.drawImage(image,this.ctx.canvas.width - this.x-this.width+this.offset_x,this.y + this.offset_y,image.width*this.animationScale,image.height*this.animationScale);
                 this.ctx.restore();
             }
             

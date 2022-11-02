@@ -50,6 +50,9 @@ export class Player extends GameObject{
             y2 : 100,
         }
 
+        //攻击次数
+        this.attackCount = 0;
+
 
         //存放角色的所有状态 gif的文件名必须与状态名相同
         this.allStates = [];
@@ -144,6 +147,7 @@ export class Player extends GameObject{
 
     normalAttack(){
         this.status = "normalAttack";
+        this.attackCount = 1;
 
         this.width = 140;
         this.height = 220;
@@ -157,12 +161,10 @@ export class Player extends GameObject{
         this.offset_y =  5;
         this.animationRate = 6;
 
-        if(this.isSuccessfuleAttack()){
-            this.root.players[1-this.id].attacked();
-        }
     }
 
     attacked(){
+        if(this.hp <= 0) return;
         this.status = "attacked";
 
         this.hp -= this.root.players[1-this.id].damage;
@@ -317,10 +319,14 @@ export class Player extends GameObject{
            }
 
         }else if(this.status === "normalAttack"){
-            if(this.frameCurrentCount < this.animationRate*this.animations.get(this.status).frameCnt){
-                return;
+            if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
+                this.idle();
+            }else{
+                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 50){
+                    this.attackCount =0;
+                    this.root.players[1-this.id].attacked();
+                }
             }
-            this.idle();
         }else if(this.status === "attacked"){
            if(this.frameCurrentCount >= this.animationRate*this.animations.get(this.status).frameCnt){
                 this.x -= this.direction * parseInt(this.width/2);

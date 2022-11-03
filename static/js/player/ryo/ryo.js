@@ -13,7 +13,7 @@ export class Ryo extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist","win"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist","win","tigerDragonDance"]
     }
 
     initAnimations(){
@@ -150,7 +150,6 @@ export class Ryo extends Player{
     attacked(){
         if(this.hp <= 0) return;
         this.status = "attacked";
-        this.x -= this.direction * parseInt(this.width/2);
 
         this.hp -= Math.max(this.root.players[1-this.id].damage-this.defense,0);
         this.$hpDiv.animate({
@@ -159,6 +158,13 @@ export class Ryo extends Player{
         this.$hp.animate({
             width: this.$hp.parent().width() * this.hp / 100
         }, 600)
+        this.defense =0;
+        this.attackArea = {
+            x1 : 0,
+            y1 : 0,
+            x2 : 0,
+            y2 : 0,
+        }
         this.width = 140;
         this.height = 220;
         this.vx = 0;
@@ -215,7 +221,7 @@ export class Ryo extends Player{
     overLordFist(){
         this.status ="overLordFist";
         this.attackCount  = 1;
-        this.damage = 100;
+        this.damage = 50;
         this.defense = 0;
         this.attackArea = {
             x1 : 100, 
@@ -259,6 +265,30 @@ export class Ryo extends Player{
         this.animationRate = 15;
     }
 
+    tigerDragonDance(){
+        this.status ="tigerDragonDance";
+        this.attackCount  = 9;
+        this.damage = 10;
+        this.defense = 50;
+        this.attackArea = {
+            x1 : 0, 
+            y1 : 0,
+            x2 : 0,
+            y2 : 0,
+        }
+
+        this.width = 140;
+        this.height = 220;
+
+        this.vx = 0 ;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_x = 0;
+        this.offset_y =  -360;
+        this.animationRate = 4;
+    }
 
     updateStatus(){
         let w,a,d,s,space,f;
@@ -279,7 +309,11 @@ export class Ryo extends Player{
         }
 
         if(this.status === "idle"){
-            if(w){
+
+            if(f){
+                this.tigerDragonDance();
+            }
+            else if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -292,7 +326,7 @@ export class Ryo extends Player{
             }else if(s){
                 this.squat();
             }
-            
+
         }else if(this.status ==="forward"){
             if(f){
                 this.overLordFist();
@@ -380,12 +414,43 @@ export class Ryo extends Player{
                     
                 }
             }
+        }else if(this.status === "tigerDragonDance"){
+        
+            if(this.isAnimationOver()){
+                this.idle();
+            }else{
+                if(this.frameCurrentCount<90){ //准备动作
+                    this.vx = 0;
+                    this.width = 100;
+                    this.offset_x = -80;
+                }else if(this.frameCurrentCount < 120){ //起跳
+                    this.offset_x -= 10;
+                    this.vx  = 1000*this.direction;
+                    this.width = 160;
+                }else if(this.frameCurrentCount<460){ //水平挥拳
+                    this.attackArea = {
+                        x1 : 100, 
+                        y1 : -10,
+                        x2 : 400,
+                        y2 : 220,
+                    }
+                    this.offset_x -= 1.5;
+                    this.vx = 100*this.direction;
+                }
+                
+                let you = this.root.players[1-this.id]; 
+                if(this.attackCount>0 && this.isSuccessfuleAttack() && you.status != "attacked"){
+                    this.attackCount--;
+                    you.attacked();
+                }
+            }
         }else if(this.status === "attacked"){
            if(this.isAnimationOver()){
                 
                 if(this.hp <= 0){
                     this.die();
                 }else{
+                    this.x -= this.direction * parseInt(this.width/2);
                     this.idle();
                 }
                 

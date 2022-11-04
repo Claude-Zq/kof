@@ -13,7 +13,7 @@ export class Ryo extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist","win","tigerDragonDance","standDefense"]
+        this.allStates = ["idle","forward","backward","jump","jumpAttack","squat","normalAttack","attacked","die","squatDefense","overLordFist","win","tigerDragonDance","standDefense"]
     }
 
     initAnimations(){
@@ -106,6 +106,28 @@ export class Ryo extends Player{
         this.offset_y = 0;
         this.frameCurrentCount = 0;
         this.animationRate = 8;  
+    }
+
+    jumpAttack(){
+        this.status = "jumpAttack";
+        this.attackCount = 1;
+        this.attackArea = {
+            x1 : 90,
+            y1 : 0,
+            x2 : 210,
+            y2 : 80,
+        }
+        this.width = 140;
+        this.height = 220;
+        this.defense = 10;
+        
+        this.vy = -2100;
+
+        //动画相关
+        this.offset_x = -50;
+        this.offset_y = -100;
+        this.frameCurrentCount = 0;
+        this.animationRate = 3.5;   
     }
     squat(){
         this.status = "squat";
@@ -206,7 +228,7 @@ export class Ryo extends Player{
         this.status = "standDefense";
         this.defense = 20;
         this.width = 140;
-        this.height = 200; 
+        this.height = 220; 
        
     
         this.vx = 0;
@@ -384,6 +406,19 @@ export class Ryo extends Player{
                 this.idle();
             }
             
+        }else if(this.status === "jumpAttack"){
+            if(this.isAnimationOver()){
+                this.idle();
+            }else{
+                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 100){
+                    let you = this.root.players[1-this.id];
+                    this.attackCount = 0;
+                    if(you.defense< this.damage){
+                        you.attacked();
+                    }
+                    
+                }
+            }
         }else if(this.status === "squat"){
             if(w){
                 this.jump();
@@ -412,6 +447,8 @@ export class Ryo extends Player{
         }else if(this.status === "normalAttack"){
             if(this.isAnimationOver()){
                 this.idle();
+            }else if(w && space){
+                this.jumpAttack();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 50){
                     let you = this.root.players[1-this.id];

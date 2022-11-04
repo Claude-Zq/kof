@@ -203,7 +203,7 @@ export class Ryo extends Player{
 
     squatDefense(){
         this.status = "squatDefense";
-        this.defense = 10;
+        this.defense = 20;
         this.width = 120;
         this.height = 150;
        
@@ -425,21 +425,33 @@ export class Ryo extends Player{
                     this.offset_x = -80;
                 }else if(this.frameCurrentCount < 120){ //起跳
                     this.offset_x -= 10;
-                    this.vx  = 1000*this.direction;
+                    this.vx  = 1500*this.direction;
                     this.width = 160;
                 }else if(this.frameCurrentCount<460){ //水平挥拳
+                    this.width = 100;
                     this.attackArea = {
                         x1 : 100, 
                         y1 : -10,
-                        x2 : 400,
+                        x2 : 200,
                         y2 : 220,
                     }
                     this.offset_x -= 1.5;
                     this.vx = 100*this.direction;
+                }else if(this.frameCurrentCount ===460){
+                    console.log(this.offset_y);
+                    this.offset_x -= 40;
+                }else{
+                    this.vx = 0;
+                    this.attackArea = {
+                        x1 : 0, 
+                        y1 : -40,
+                        x2 : this.width+50,
+                        y2 : 50,
+                    } 
                 }
                 
                 let you = this.root.players[1-this.id]; 
-                if(this.attackCount>0 && this.isSuccessfuleAttack() && you.status != "attacked"){
+                if(this.attackCount>0 && this.isSuccessfuleAttack() && you.status != "attacked"&&this.damage>you.defense){
                     this.attackCount--;
                     you.attacked();
                 }
@@ -450,7 +462,6 @@ export class Ryo extends Player{
                 if(this.hp <= 0){
                     this.die();
                 }else{
-                    this.x -= this.direction * parseInt(this.width/2);
                     this.idle();
                 }
                 

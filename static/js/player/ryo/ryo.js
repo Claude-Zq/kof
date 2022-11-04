@@ -13,7 +13,7 @@ export class Ryo extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist","win","tigerDragonDance"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","attacked","die","squatDefense","overLordFist","win","tigerDragonDance","standDefense"]
     }
 
     initAnimations(){
@@ -33,6 +33,7 @@ export class Ryo extends Player{
                 obj.loaded = true;
             }
         }
+        console.log('load success');
     }
 
 
@@ -201,6 +202,23 @@ export class Ryo extends Player{
 
     }
 
+    standDefense(){
+        this.status = "standDefense";
+        this.defense = 20;
+        this.width = 140;
+        this.height = 200; 
+       
+    
+        this.vx = 0;
+        this.vy = 0;
+
+        //动画相关
+        this.offset_x = -15;
+        this.offset_y = 15;
+        this.frameCurrentCount = 0;
+        this.animationRate = 8;   
+    }
+
     squatDefense(){
         this.status = "squatDefense";
         this.defense = 20;
@@ -310,8 +328,8 @@ export class Ryo extends Player{
 
         if(this.status === "idle"){
 
-            if(f){
-                this.tigerDragonDance();
+           if(f){
+                this.standDefense();
             }
             else if(w){
                 this.jump();
@@ -328,10 +346,7 @@ export class Ryo extends Player{
             }
 
         }else if(this.status ==="forward"){
-            if(f){
-                this.overLordFist();
-            }
-            else if(w){
+           if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -388,6 +403,12 @@ export class Ryo extends Player{
                 this.squat();
             }
 
+        }else if (this.status === "standDefense"){
+            if(!f){
+                this.idle();
+            }else if(s){
+                this.tigerDragonDance();
+            }
         }else if(this.status === "normalAttack"){
             if(this.isAnimationOver()){
                 this.idle();

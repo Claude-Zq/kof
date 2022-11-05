@@ -13,7 +13,7 @@ export class Karakuri extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","sweep","attackUp","win"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","sweep","attackUp","win","sweep"]
     }
 
     initAnimations(){
@@ -126,7 +126,7 @@ export class Karakuri extends Player{
         this.width = 140;
         this.height = 180;
 
-        this.damage = 20;d
+        this.damage = 20;
         this.defense = 10;
         this.attackCount = 1;
         
@@ -247,6 +247,30 @@ export class Karakuri extends Player{
 
     }
 
+    sweep(){
+        this.status = "sweep";
+        this.attackCount = 4;
+        this.attackArea = {
+            x1 : -150,
+            y1 : -20,
+            x2 : 300,
+            y2 : 100,
+        }
+        this.damage = 10;
+        this.defense = 10;
+        this.width = 120;
+        this.height = 260;
+
+        this.vx = 0 ;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_x = -190;
+        this.offset_y = -20;
+        this.animationRate = 4; 
+    }
+
    
 
     updateStatus(){
@@ -270,7 +294,7 @@ export class Karakuri extends Player{
         if(this.status === "idle"){
 
            if(f){
-                this.die();
+                this.sweep();
             }
             else if(w){
                 this.jump();
@@ -356,7 +380,6 @@ export class Karakuri extends Player{
             
         }else if(this.status === "squatAttack"){
 
-         
             if(this.isAnimationOver()){
                 this.squat();
             }else {
@@ -369,9 +392,18 @@ export class Karakuri extends Player{
                     
                 }
             }
-        }else if (this.status === "standDefense"){
-            if(!f){
-                this.idle();
+        }else if (this.status === "sweep"){
+            if(this.isAnimationOver()){
+                this.idle();d
+            }else {
+                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 9 && this.frameCurrentCount <= 110){
+                    let you = this.root.players[1-this.id];
+                    this.attackCount--;
+                    if(you.defense< this.damage){
+                        you.attacked();
+                    }
+                    
+                }
             }
         }else if(this.status === "normalAttack"){
 

@@ -13,7 +13,7 @@ export class RedRobot extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","win","standDefense"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","win","standDefense","squatDefense"]
     }
 
     initAnimations(){
@@ -32,7 +32,6 @@ export class RedRobot extends Player{
                 obj.loaded = true;
             }
         }
-        console.log('load success');
     }
 
     idle(){
@@ -141,6 +140,23 @@ export class RedRobot extends Player{
         this.offset_y = -35;
         this.frameCurrentCount = 0;
         this.animationRate = 6;   
+    }
+   
+    squatDefense(){
+        this.status = "squatDefense";
+        this.defense = 20;
+        this.width = 150;
+        this.height = 140; 
+       
+    
+        this.vx = 0;
+        this.vy = 0;
+
+        //动画相关
+        this.offset_x = -50;
+        this.offset_y = -40;
+        this.frameCurrentCount = 0;
+        this.animationRate = 8;  
     }
 
     normalAttack(){
@@ -358,12 +374,13 @@ export class RedRobot extends Player{
                 else this.forward();
             }else if(space){
                 this.squatAttack();
+            }else if(f){
+                this.squatDefense();
             }else if(this.frameCurrentCount >= 55){
                 this.frameCurrentCount = 35;
             }
             
         }else if(this.status === "squatAttack"){
-
             if(this.isAnimationOver()){
                 this.squat();
             }else {
@@ -375,6 +392,10 @@ export class RedRobot extends Player{
                     }
                     
                 }
+            }
+        }else if(this.status === "squatDefense"){
+            if(this.isAnimationOver()){
+                this.squat();
             }
         }else if(this.status === "normalAttack"){
             if(this.isAnimationOver()){

@@ -14,7 +14,7 @@ export class ZhuGeliang extends Player{
         this.initAnimations();
     }
     initSkills(){
-        this.allStates = ["idle","forward","backward","jumpAttack","normalAttack","attacked","die","win","standDefense","fireAttack"]
+        this.allStates = ["idle","forward","backward","jumpAttack","normalAttack","attacked","die","win","standDefense","fireAttack","thunderAttack"]
     }
     initAnimations(){
         let outer = this;
@@ -162,6 +162,30 @@ export class ZhuGeliang extends Player{
         this.animationRate = 5; 
     }
 
+    thunderAttack(){
+        this.status = "thunderAttack";
+        this.attackCount = 3;
+        this.attackArea = {
+            x1 :  100,
+            y1 : -250,
+            x2 : 360,
+            y2 : 80,
+        }
+        this.damage = 10;
+        this.defense = 100;
+        this.width = 180;
+        this.height = 200; 
+
+        this.vx = 0 ;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_x = -350;
+        this.offset_y = -250;
+        this.animationRate = 4;  
+    }
+
     attacked(){
         if(this.hp <= 0) return;
         this.status = "attacked";
@@ -279,7 +303,7 @@ export class ZhuGeliang extends Player{
                 this.standDefense();
             }
             else if(w){
-    
+                this.thunderAttack();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
@@ -354,7 +378,6 @@ export class ZhuGeliang extends Player{
                 }
             }
         }else if(this.status === "fireAttack"){
-
             if(this.isAnimationOver()){
                 this.idle();
             }else{
@@ -365,6 +388,39 @@ export class ZhuGeliang extends Player{
                         you.attacked();
                     }
                     
+                }
+            }
+        }else if(this.status === "thunderAttack"){
+           
+            if(this.isAnimationOver()){
+                this.idle();
+            }else if(this.frameCurrentCount === 40){
+                this.attackArea = {
+                    x1 :  -270,
+                    y1 : -250,
+                    x2 : 0,
+                    y2 : 80,
+                }
+            }else if(this.frameCurrentCount ===110){
+                this.attackArea = {
+                    x1 :  -20,
+                    y1 : -250,
+                    x2 : 200,
+                    y2 : 80, 
+                }
+            }else if(this.frameCurrentCount ===130){
+                this.attackArea = {
+                    x1 :  110,
+                    y1 : -250,
+                    x2 : 350,
+                    y2 : 80, 
+                } 
+            }
+            if(this.attackCount > 0 && this.isSuccessfuleAttack()){
+                let you = this.root.players[1-this.id];
+                this.attackCount--;
+                if(you.defense< this.damage){
+                    you.attacked();
                 }
             }
         }else if(this.status === "attacked"){

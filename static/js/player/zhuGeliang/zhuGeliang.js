@@ -7,7 +7,7 @@ export class ZhuGeliang extends Player{
         super(root,info);
 
         this.animationScale = 2.5;
-        this.status ="idle";
+        this.status ="jumpAttack";
          //存放角色的所有状态 gif的文件名必须与状态名相同
         this.allStates = [];
         this.initSkills();
@@ -244,8 +244,10 @@ export class ZhuGeliang extends Player{
     die(){
         this.status = "die";
 
-        this.width = 240;
-        this.height = 50;
+        let you = this.root.players[1-this.id];
+        this.direction = you.direction;
+        this.width = 0;
+        this.height = 0;
         this.vx = 0;
         this.vy = 0;
         this.attackArea = {
@@ -254,12 +256,12 @@ export class ZhuGeliang extends Player{
             y1:0,
             y2:0,
         }
-        this.root.players[1-this.id].win();
+        you.win();
           //动画相关
           this.frameCurrentCount = 10;
           this.offset_x = 0;
-          this.offset_y =  -250;
-          this.animationRate = 5;
+          this.offset_y = -200;
+          this.animationRate = 3;
     }
 
     standDefense(){
@@ -481,7 +483,7 @@ export class ZhuGeliang extends Player{
                 
            }
         }else if(this.status === "die"){
-          
+            this.x += this.direction * 10;
         }else if(this.status === "win"){ 
             if(this.isAnimationOver()){
                 this.idle();

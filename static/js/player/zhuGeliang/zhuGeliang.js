@@ -14,7 +14,7 @@ export class ZhuGeliang extends Player{
         this.initAnimations();
     }
     initSkills(){
-        this.allStates = ["idle","forward","backward","jumpAttack","normalAttack","attacked","die","win","standDefense","fireAttack","thunderAttack"]
+        this.allStates = ["idle","forward","backward","jumpAttack","normalAttack","attacked","die","win","standDefense","fireAttack","thunderAttack","jumpAttack"]
     }
     initAnimations(){
         let outer = this;
@@ -94,23 +94,24 @@ export class ZhuGeliang extends Player{
     jumpAttack(){
         this.status = "jumpAttack";
         this.attackCount = 1;
+        this.damage = 30;
         this.attackArea = {
-            x1 : 70,
-            y1 : 0,
-            x2 : 120,
-            y2 : 40,
+            x1 : 120,
+            y1 : -40 ,
+            x2 : 420,
+            y2 : 150,
         }
-        this.width = 90;
-        this.height = 140;
+        this.width = 180;
+        this.height = 200; 
         this.defense = 10;
         
         this.vy = -2100;
 
         //动画相关
-        this.offset_x = -50;
-        this.offset_y = -100;
+        this.offset_x = -100;
+        this.offset_y = -150;
         this.frameCurrentCount = 0;
-        this.animationRate = 3.5;   
+        this.animationRate = 3.6 ;   
     } 
 
     normalAttack(){
@@ -344,10 +345,11 @@ export class ZhuGeliang extends Player{
             }
 
         }else if(this.status === "jumpAttack"){
+          
             if(this.isAnimationOver()){
                 this.idle();
             }else{
-                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 100){
+                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 10 && this.frameCurrentCount <= 30){
                     let you = this.root.players[1-this.id];
                     this.attackCount = 0;
                     if(you.defense< this.damage){

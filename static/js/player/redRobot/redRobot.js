@@ -13,7 +13,7 @@ export class RedRobot extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","win","standDefense","squatDefense"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","win","standDefense","squatDefense","jumpAttack"]
     }
 
     initAnimations(){
@@ -92,13 +92,37 @@ export class RedRobot extends Player{
         this.defense = 0;
         
         this.y -= 200;
-        this.vy = -2000;
+        this.vy = -1500;
 
         //动画相关
         this.offset_x = 0;
         this.offset_y = 0;
         this.frameCurrentCount = 10;
         this.animationRate = 5;  
+    }
+
+    
+    jumpAttack(){
+        this.status = "jumpAttack";
+        this.attackCount = 1;
+        this.attackArea = {
+            x1 : 100,
+            y1 : 0,
+            x2 : 420,
+            y2 : 100,
+        }
+        this.width = 150;
+        this.height = 190; 
+        this.defense = 10;
+        
+        this.y -= 100;
+        this.vy = -1500;
+
+        //动画相关
+        this.offset_x = -110;
+        this.offset_y = -200;
+        this.frameCurrentCount = 0;
+        this.animationRate = 3;   
     }
 
     squat(){
@@ -349,7 +373,7 @@ export class RedRobot extends Player{
             if(this.isAnimationOver()){
                 this.idle();
             }else{
-                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 100){
+                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 35 && this.frameCurrentCount <= 50){
                     let you = this.root.players[1-this.id];
                     this.attackCount = 0;
                     if(you.defense< this.damage){

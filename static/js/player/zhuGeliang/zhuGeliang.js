@@ -14,7 +14,7 @@ export class ZhuGeliang extends Player{
         this.initAnimations();
     }
     initSkills(){
-        this.allStates = ["idle","forward","backward","jumpAttack","normalAttack","attacked","die","win","standDefense","fireAttack","thunderAttack","jumpAttack"]
+        this.allStates = ["idle","forward","backward","jumpAttack","normalAttack","attacked","die","win","standDefense","fireAttack","thunderAttack","jumpAttack","swordUnity"]
     }
     initAnimations(){
         let outer = this;
@@ -187,6 +187,30 @@ export class ZhuGeliang extends Player{
         this.animationRate = 4;  
     }
 
+    swordUnity(){
+        this.status = "swordUnity";
+        this.attackCount = 1;
+        this.attackArea = {
+            x1 :  -200,
+            y1 : -40,
+            x2 : 400,
+            y2 : 220,
+        }
+        this.damage = 10;
+        this.defense = 80;
+        this.width = 180;
+        this.height = 200; 
+
+        this.vx = 0 ;
+        this.vy = 0;
+
+        //动画相关
+        this.frameCurrentCount = 0;
+        this.offset_x = -210;
+        this.offset_y = -50;
+        this.animationRate = 3;  
+    }
+
     attacked(){
         if(this.hp <= 0) return;
         this.status = "attacked";
@@ -311,6 +335,8 @@ export class ZhuGeliang extends Player{
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
+            }else if(s){
+                this.swordUnity();
             }else if(space){
                 this.normalAttack();
             }
@@ -323,6 +349,8 @@ export class ZhuGeliang extends Player{
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
+            }else if(s){
+                this.swordUnity();
             }else if(space){
                 this.normalAttack();
             }else{
@@ -338,6 +366,8 @@ export class ZhuGeliang extends Player{
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
+            }else if(s){
+                this.swordUnity();
             }else if(space){
                 this.normalAttack();
             }else{
@@ -425,6 +455,21 @@ export class ZhuGeliang extends Player{
                     you.attacked();
                 }
             }
+        }else if(this.status === "swordUnity"){
+            if(this.isAnimationOver()){
+                this.idle();
+            }d
+            if(this.isAnimationOver()){
+                this.idle();
+            }
+            if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 5 && this.frameCurrentCount <= 24){
+                let you = this.root.players[1-this.id];
+                this.attackCount  = 0;
+                if(you.defense< this.damage){
+                    you.attacked();
+                }
+                
+            } 
         }else if(this.status === "attacked"){
            if(this.isAnimationOver()){
                 

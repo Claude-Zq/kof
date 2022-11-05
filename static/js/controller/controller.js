@@ -9,12 +9,12 @@ export class Controller{
 
         let outer = this;
         this.$canvas.keydown(function(e){
-            outer.pressedKeys.add(e.key);
-            console.log(e.key);
+            outer.pressedKeys.add(e.key.toLowerCase());
+           
         });
 
         this.$canvas.keyup(function(e){
-            outer.pressedKeys.delete(e.key);
+            outer.pressedKeys.delete(e.key.toLowerCase());
         })
     }
 }

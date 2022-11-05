@@ -340,12 +340,12 @@ export class Ryo extends Player{
             f = this.pressedKeys.has('f');
             space = this.pressedKeys.has(' ');
         }else{
-            w = this.pressedKeys.has("ArrowUp");
-            a = this.pressedKeys.has("ArrowLeft");
-            s = this.pressedKeys.has('ArrowDown');
-            f = this.pressedKeys.has('Shift');
-            d = this.pressedKeys.has('ArrowRight');
-            space = this.pressedKeys.has('Enter');
+            w = this.pressedKeys.has("arrowup");
+            a = this.pressedKeys.has("arrowleft");
+            s = this.pressedKeys.has('arrowdown');
+            f = this.pressedKeys.has('shift');
+            d = this.pressedKeys.has('arrowright');
+            space = this.pressedKeys.has('enter');
         }
 
         if(this.status === "idle"){

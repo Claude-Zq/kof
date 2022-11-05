@@ -368,7 +368,9 @@ export class Ryo extends Player{
             }
 
         }else if(this.status ==="forward"){
-           if(w){
+            if(f){
+                this.tigerDragonDance();
+            }else if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -449,6 +451,8 @@ export class Ryo extends Player{
                 this.idle();
             }else if(w && space){
                 this.jumpAttack();
+            }else if(d && space){
+                this.overLordFist();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 50){
                     let you = this.root.players[1-this.id];

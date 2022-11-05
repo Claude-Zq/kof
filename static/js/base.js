@@ -1,8 +1,7 @@
 import { GameMap } from "./game_map/base.js";
 import { Controller } from "./controller/controller.js";
-import { Tsunade } from "./player/tsunade/tsunade.js";
 import { Ryo } from "./player/ryo/ryo.js";
-import { Karakuri } from "./player/karakuri/karakuri.js";
+import { ZhuGeliang } from "./player/zhuGeliang/zhuGeliang.js";
 export const GRAVITY = 5000;  //地面高度
 export const GROUND_HEIGHT = 50;
 export const STATUS_CNT = 8; // 0:idle 1:向前 2:向后 3:跳跃 4:攻击 5:被打: 6:死亡 7:大招
@@ -12,7 +11,7 @@ export class KOF{
         this.gameMap = new GameMap(this);
         this.controller = new Controller(this.gameMap.$canvas);
         this.players = [
-            new Karakuri(this,{
+            new ZhuGeliang(this,{
                 id:0,
                 x:200,
                 y:0,

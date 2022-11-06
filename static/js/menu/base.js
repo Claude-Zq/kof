@@ -6,9 +6,11 @@ export class Menu{
         let startMenu = $(`
         <div id="start-menu">
 		    <h1>大乱斗</h1>
+            <!-- 角色头像 --> 
+            <img src="/static/images/allPlayers/${root.player0Id}.png" id="player0-img" alt="角色0图片">
+            <img src="/static/images/allPlayers/${root.player1Id}.png" id="player1-img" alt="角色1图片">
             <!-- 选择按钮 --> 
             <div id='menu'>
-                <button id="select-role-btn">切换角色</button>
                 <button id="select-background-btn">切换背景</button>
                 <button id="intro-btn">游戏介绍</button>
                 <button id ="start-btn">开始游戏</button>
@@ -57,25 +59,24 @@ export class Menu{
             
         })
 
+
+
+        //点击图片切换角色
+        $("#start-menu #player0-img").click(function(){
+            root.player0Id = (root.player0Id +1)%6;
+            $('#start-menu #player0-img').attr('src', `/static/images/allPlayers/${root.player0Id}.png`) 
+        })
+        //点击图片切换角色
+        $("#start-menu #player1-img").click(function(){
+            root.player1Id = (root.player1Id +1)%6;
+            $('#start-menu #player1-img').attr('src', `/static/images/allPlayers/${root.player1Id}.png`) 
+        })
+
         this.setMenuCss();
         this.setIntroCss();
-
-           
     }
 
-
-
-    setMenuCss(){
-        // /* 游戏菜单 盒子 */
-        // #menu-box {
-        //     width: 300px;
-        //     position: absolute;
-        //     color: #fff;
-        //     left: 50%;
-        //     top: 50%;
-        //     transform: translate(-50%, -50%);
-        //     text-align: center;
-        // }
+    setMenuCss(){    
         //整个菜单
         $(`#${this.root.id} #start-menu`).css({
             "width":window.innerWidth,
@@ -85,12 +86,6 @@ export class Menu{
             "background-position": "top",
             "position": "absolute",
         })      
-        // /* 游戏菜单 游戏标题 */
-        // #menu-box h1 {
-        //     letter-spacing: 5px;
-        //     margin-bottom: 30px;
-        //     font-size: 40px;
-        // }
 
         //菜单标题
         $(`#${this.root.id} #start-menu h1`).css({
@@ -99,18 +94,7 @@ export class Menu{
             "color":"#f5f7a7",
 
         })
-    // /* 游戏菜单 按钮 */
-    // #menu-box #d2 button {
-    //     display: inline-block;
-    //     background-image: linear-gradient(160deg, rgb(89, 175, 255), rgb(99, 63, 255));
-    //     box-shadow: 0px 0px 20px rgb(89, 175, 255);
-    //     width: 200px;
-    //     height: 40px;
-    //     border-radius: 20px;
-    //     margin: 20px 0;
-    //     color: #fff;
-    //     border: none;
-    // }
+
     $(`#${this.root.id} #start-menu #menu`).css({
         "width": "400px",
         "position": "absolute",
@@ -132,30 +116,38 @@ export class Menu{
         "color": "white",
         "border": "none",
     })
+    $(`#${this.root.id} #start-menu #player0-img`).css({
+        "box-sizing": "border-box",
+        "border": "solid #dee2e6",
+        "width": "200px",
+        "height":"200px",
+        "position": "absolute",
+        "left": "0%",
+        "top": "0%",
+
+        "margin": "0 1rem 1rem 0",
+        "border": "4mm ridge rgba(211, 220, 50, .6)",
+        "border-radius": "30px",
+        
+    })  
+    $(`#${this.root.id} #start-menu #player1-img`).css({
+        "box-sizing": "border-box",
+        "border": "solid #dee2e6",
+        "width": "200px",
+        "height":"200px",
+        "position": "absolute",
+        "right": "0%",
+        "top": "0%",
+
+        "margin": "0 0 1rem 1rem",
+        "border": "4mm ridge rgba(211, 220, 50, .6)",
+        "border-radius": "30px",
+    }) 
 
     }
 
     setIntroCss(){
 
-
-// /* 规则盒子 */
-// .guize-box {
-//     display: none;
-//     position: absolute;
-//     left: 50%;
-//     top: 50%;
-//     transform: translate(-50%, -50%);
-//     background-image: linear-gradient(160deg, rgb(89, 175, 255), rgb(99, 63, 255));
-//     box-shadow: 0px 0px 20px rgb(89, 175, 255);
-//     width: 300px;
-//     height: 300px;
-//     border-radius: 20px;
-//     text-align: center;
-//     padding: 40px;
-//     color: #fff;
-//     overflow: hidden;
-//     line-height: 40px;
-// }
 
     $(`#${this.root.id} #intro`).css({
         // "display": "none",

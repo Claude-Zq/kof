@@ -426,7 +426,7 @@ export class Karakuri extends Player{
                 if(this.hp <= 0){
                     this.die();
                 }else{
-                    this.x -= this.width;
+                    this.x -= this.width*this.direction;
                     this.idle();
                 }
                 

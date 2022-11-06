@@ -16,6 +16,7 @@ export class KOF{
         this.bgId = 5; //背景图片Id
         this.player0Id = 1; //玩家0的角色Id
         this.player1Id = 0; //晚间1的角色Id
+        this.gameResult = "平局"; //游戏结果
         this.id = id;
         this.menu = new Menu(this);
     }
@@ -42,6 +43,15 @@ export class KOF{
             case 5: player1 = new Yuri(this,{id:1,x:window.innerWidth-120-200,y:0});break;
        }
         this.players = [player0,player1];
+    }
+
+    endGame(){
+        if(this.players[0].hp >= this.players[1].hp){
+            this.gameResult = "左边获胜";
+        }else{
+            this.gameResult = "右边获胜";
+        }
+        this.menu.endGame();
     }
 
 }

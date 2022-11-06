@@ -191,7 +191,11 @@ export class GameMap extends GameObject{
             this.timeLeft = 0;
             let [a, b] = this.root.players;
             if (a.status !== "die" && b.status !== "die") {
-                a.die();b.die();
+                if(a.hp > b.hp){
+                    b.die();
+                }else {
+                    a.die();
+                }
             }
         }
         this.$timer.text(parseInt(this.timeLeft / 1000));

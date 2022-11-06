@@ -1,3 +1,4 @@
+import  clearGameObjects  from "../game_object/base.js";
 export class Menu{
     constructor(root) {
         this.root = root;
@@ -25,32 +26,47 @@ export class Menu{
             <h2>游戏介绍</h2>
             <p>
                 简单的双人对战游戏<br>
-                <br>
+                点击头像可切换角色<br>
                 <br>
             </p>
             <button>X</button>
         </div>`)
+
+        //结束游戏界面
+        let overMenu = $(`
+        <!-- 结束菜单 -->
+        <div id="overMenu">
+            <h2>玩家左获胜</h2>
+			<button class="back">返 回</button>
+        </div>
+        `)
         this.root.$kof.append(startMenu);
         this.root.$kof.append(intro);
-        intro.hide();
+        this.root.$kof.append(overMenu);
 
-        // 规则按钮
+        startMenu.show();
+        intro.hide();
+        overMenu.hide();
+
+        // 游戏介绍按钮
         $("#menu #intro-btn").click(function () {
             $("#intro").show();
-            // $('#start-menu').hide();
+           
         })
 
+        //关闭游戏介绍页面按钮
         $('#intro button').click(function () {
             $("#intro").hide();
             $('#start-menu').show();
         })
 
-        // 开始 按钮
+        // 开始游戏按钮
         $("#menu #start-btn").click(function () {
             $("#start-menu").fadeOut(500);
-            root.startGame();// 开始游戏
+            root.startGame();
         });
 
+        //切换背景
         $("#menu #select-background-btn").click(function(){
             root.bgId = (root.bgId+1)%5;
             $('#start-menu').css({
@@ -58,8 +74,6 @@ export class Menu{
             })    
             
         })
-
-
 
         //点击图片切换角色
         $("#start-menu #player0-img").click(function(){
@@ -72,11 +86,21 @@ export class Menu{
             $('#start-menu #player1-img').attr('src', `/static/images/allPlayers/${root.player1Id}.png`) 
         })
 
-        this.setMenuCss();
+        $("#overMenu button").click(function(){
+            overMenu.hide();
+            startMenu.show();
+           $(`#${root.id} .kof-head`).remove();
+           $(`#${root.id} canvas`).remove();
+        //    GAME_OBJECTS = [];
+           clearGameObjects();
+          
+        })
+        this.setStartMenuCss();
         this.setIntroCss();
+        this.setOverMenuCss();
     }
 
-    setMenuCss(){    
+    setStartMenuCss(){    
         //整个菜单
         $(`#${this.root.id} #start-menu`).css({
             "width":window.innerWidth,
@@ -186,6 +210,45 @@ export class Menu{
     })
     }
 
+    setOverMenuCss(){
+        $(`#${this.root.id} #overMenu`).css({
+            "position": "absolute",
+            "left": "50%",
+            "top": "50%",
+            "transform": "translate(-50%, -50%)",
+            "background-image": "linear-gradient(160deg, rgb(89, 175, 255), rgb(99, 63, 255))",
+            "box-shadow": "0px 0px 20px rgb(89, 175, 255)",
+            "width": "300px",
+            "height": "300px",
+            "border-radius": "20px",
+            "text-align": "center",
+            "padding": "40px",
+            "color": "#fff",
+            "overflow": "hidden",
+            "line-height": "40px",
+        })
+        $(`#${this.root.id} #overMenu button`).css({
+            "display ": "inline-block",
+            "background-color":"#1f9cf0",
+            "box-shadow": "0px 0px 20px rgb(89, 175, 255)",
+            "width": "300px",
+            "height": "60px",
+            "border-radius": "20px",
+            "margin": "60px 0",
+            "color": "white",
+            "border": "none",
+            
+        })
+         $(`#${this.root.id} #overMenu h2`).css({
+            "text-align": "center",
+            "font-size": "40px",
+            "color":"#f5f7a7",
+        })
+    }
+    endGame(){
+        $(`#${this.root.id} #overMenu h2`).text(this.root.gameResult);
+        $(`#${this.root.id} #overMenu`).show();
+    }
 
 
 }

@@ -37,3 +37,11 @@ let gameObjectsFrame = (timestamp)=>{
     requestAnimationFrame(gameObjectsFrame);
 }
 requestAnimationFrame(gameObjectsFrame);
+
+let clearGameObjects = ()=>{
+    GAME_OBJECTS = [];
+}
+
+export {
+    clearGameObjects as default
+}

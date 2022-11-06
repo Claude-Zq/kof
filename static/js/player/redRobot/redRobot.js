@@ -491,7 +491,8 @@ export class RedRobot extends Player{
         }else if(this.status === "win"){ 
             if(this.isAnimationOver()){
                 this.idle();
-            }
+                this.root.endGame();
+            } 
         }
     }
 

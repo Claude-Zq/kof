@@ -13,7 +13,7 @@ export class Karakuri extends Player{
     }
 
     initSkills(){
-        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","sweep","attackUp","win","sweep"]
+        this.allStates = ["idle","forward","backward","jump","squat","normalAttack","die","attacked","squatAttack","sweep","win","sweep"]
     }
 
     initAnimations(){
@@ -438,6 +438,7 @@ export class Karakuri extends Player{
         }else if(this.status === "win"){ 
             if(this.frameCurrentCount >= 160){
                 this.idle();
+               this.root.endGame();
             } 
         }
     }

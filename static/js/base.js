@@ -9,6 +9,8 @@ export const STATUS_CNT = 8; // 0:idle 1:向前 2:向后 3:跳跃 4:攻击 5:被
 export class KOF{
     constructor(id){
         this.$kof = $('#'+id);
+        this.bgId = 1; //背景图片ID
+        this.id = id;
         this.menu = new Menu(this);
 
     //    this.startGame();

@@ -127,13 +127,14 @@ export class Menu{
         //菜单标题
         $(`#${this.root.id} #start-menu h1`).css({
             "text-align": "center",
-            "font-size": "75px",
+            "font-size": "80px",
+            "margin-top":"30px",
             "color":"#f5f7a7",
 
         })
 
     $(`#${this.root.id} #start-menu #menu`).css({
-        "width": "400px",
+        "width": "350px",
         "position": "absolute",
         "left": "50%",
         "top": "50%",
@@ -144,14 +145,13 @@ export class Menu{
     //菜单按钮
     $(`#${this.root.id} #menu button`).css({
         "display ": "inline-block",
-        "background-color":"#1f9cf0",
-        "box-shadow": "0px 0px 20px rgb(89, 175, 255)",
+        "background-color":"#4f78cc",
         "width": "300px",
         "height": "60px",
         "border-radius": "20px",
         "margin": "20px 0",
-        "color": "white",
-        "border": "none",
+        "color": "#f5f7a7",
+        "border": "solid",
     })
     $(`#${this.root.id} #start-menu #player0-img`).css({
         "box-sizing": "border-box",

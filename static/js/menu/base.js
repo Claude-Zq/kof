@@ -72,11 +72,19 @@ export class Menu{
          <div id="intro">
              <h2>游戏介绍</h2>
              <p>
-                 简单的双人对战游戏<br>
-                 点击头像可切换角色<br>
+                 经典的双人对战街机游戏<br>
+                 点击角色图片可切换角色<br>
+                 <br>
+                 玩家操作键： <br>
+                 跳跃：↑(w) <br>
+                 下蹲：↓(s) <br>
+                 左移：←(a) <br>
+                 右移：→(d) <br>
+                 攻击: 空格(回车) <br>
+                 防守: f(Shift) <br>
                  <br>
              </p>
-             <button>X</button>
+             <button>×</button>
          </div>`)
 
          this.root.$kof.append(this.intro);
@@ -101,7 +109,7 @@ export class Menu{
         </div>
         `)
         this.root.$kof.append(this.overMenu);
-        this.overMenu.hide();
+        this.overMenu.show();
 
         let outer = this;
         $("#overMenu button").click(function(){
@@ -187,34 +195,34 @@ export class Menu{
 
 
     $(`#${this.root.id} #intro`).css({
-        // "display": "none",
+        "display": "none",
         "position": "absolute",
         "left": "50%",
         "top": "50%",
         "transform": "translate(-50%, -50%)",
-        "background-image": "linear-gradient(160deg, rgb(89, 175, 255), rgb(99, 63, 255))",
-        "box-shadow": "0px 0px 20px rgb(89, 175, 255)",
-        "width": "300px",
-        "height": "300px",
-        "border-radius": "20px",
+        "background-color": "#4f78cc",
+        "width": "600px",
+        "height": "600px",
+        "border":"thick double #f5f7a7",
+        "border-radius": "30px",
         "text-align": "center",
         "padding": "40px",
         "color": "#fff",
         "overflow": "hidden",
-        "line-height": "40px",
+        "line-height": "2.5",
     })
 
     $(`#${this.root.id} #intro button`).css({
         "position": "absolute",
-        "right": "0",
-        "top": "0",
+        "right": "10px",
+        "top": "5px",
         "width": "40px",
         "height": "40px",
-        "border-radius": "20px",
+        "border-radius": "10px",
         "border": "none",
         "font-weight": "700",
-        "font-size": "24px",
-        "color": "#fff",
+        "font-size": "50px",
+        "color": " #f5f7a7",
         "background-color": "transparent", 
     })
 
@@ -228,25 +236,21 @@ export class Menu{
             "left": "50%",
             "top": "50%",
             "transform": "translate(-50%, -50%)",
-            "background-image": "linear-gradient(160deg, rgb(89, 175, 255), rgb(99, 63, 255))",
-            "box-shadow": "0px 0px 20px rgb(89, 175, 255)",
-            "width": "300px",
-            "height": "300px",
+            "background-color": "#4f78cc",
+            "width": "250px",
+            "height": "250px",
+            "border": "solid",
             "border-radius": "20px",
             "text-align": "center",
             "padding": "40px",
             "color": "#fff",
-            "overflow": "hidden",
-            "line-height": "40px",
         })
         $(`#${this.root.id} #overMenu button`).css({
-            "display ": "inline-block",
-            "background-color":"#1f9cf0",
-            "box-shadow": "0px 0px 20px rgb(89, 175, 255)",
-            "width": "300px",
-            "height": "60px",
+            "background-color":"#c07820",
+            "width": "250px",
+            "height": "50px",
             "border-radius": "20px",
-            "margin": "60px 0",
+            "margin":"80px 0 0 0",
             "color": "white",
             "border": "none",
             

@@ -46,8 +46,10 @@ export class KOF{
     }
 
     endGame(){
-        if(this.players[0].hp >= this.players[1].hp){
+        if(this.players[0].hp > this.players[1].hp){
             this.gameResult = "左边获胜";
+        }else if(this.players[0].hp === this.players[1].hp){
+            this.gameResult = "平局";
         }else{
             this.gameResult = "右边获胜";
         }

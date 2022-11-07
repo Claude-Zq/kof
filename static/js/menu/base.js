@@ -62,8 +62,9 @@ export class Menu{
 
         // 开始游戏按钮
         $("#menu #start-btn").click(function () {
-            $("#start-menu").fadeOut(500);
+            $('#start-menu #menu').hide();
             root.startGame();
+            $("#start-menu").fadeOut(1000);
         });
 
         //切换背景

@@ -2,105 +2,117 @@ import  clearGameObjects  from "../game_object/base.js";
 export class Menu{
     constructor(root) {
         this.root = root;
-
-        //开始菜单页
-        let startMenu = $(`
-        <div id="start-menu">
-		    <h1>大乱斗</h1>
-            <!-- 角色头像 --> 
-            <img src="/static/images/allPlayers/${root.player0Id}.png" id="player0-img" alt="角色0图片">
-            <img src="/static/images/allPlayers/${root.player1Id}.png" id="player1-img" alt="角色1图片">
-            <!-- 选择按钮 --> 
-            <div id='menu'>
-                <button id="select-background-btn">切换背景</button>
-                <button id="intro-btn">游戏介绍</button>
-                <button id ="start-btn">开始游戏</button>
-            </div>
-	    </div>`
-        )
-
-        //介绍页面
-        let intro = $(` 
-        <!-- 游戏介绍 -->
-        <div id="intro">
-            <h2>游戏介绍</h2>
-            <p>
-                简单的双人对战游戏<br>
-                点击头像可切换角色<br>
-                <br>
-            </p>
-            <button>X</button>
-        </div>`)
-
-        //结束游戏界面
-        let overMenu = $(`
-        <!-- 结束菜单 -->
-        <div id="overMenu">
-            <h2>玩家左获胜</h2>
-			<button class="back">返 回</button>
-        </div>
-        `)
-        this.root.$kof.append(startMenu);
-        this.root.$kof.append(intro);
-        this.root.$kof.append(overMenu);
-
-        startMenu.show();
-        intro.hide();
-        overMenu.hide();
-
-        // 游戏介绍按钮
-        $("#menu #intro-btn").click(function () {
-            $("#intro").show();
-           
-        })
-
-        //关闭游戏介绍页面按钮
-        $('#intro button').click(function () {
-            $("#intro").hide();
-            $('#start-menu').show();
-        })
-
-        // 开始游戏按钮
-        $("#menu #start-btn").click(function () {
-            $('#start-menu #menu').hide();
-            root.startGame();
-            $("#start-menu").fadeOut(1000);
-        });
-
-        //切换背景
-        $("#menu #select-background-btn").click(function(){
-            root.bgId = (root.bgId+1)%5;
-            $('#start-menu').css({
-                "background-image": `url("/static/images/background/${root.bgId}.gif")`
-            })    
-            
-        })
-
-        //点击图片切换角色
-        $("#start-menu #player0-img").click(function(){
-            root.player0Id = (root.player0Id +1)%6;
-            $('#start-menu #player0-img').attr('src', `/static/images/allPlayers/${root.player0Id}.png`) 
-        })
-        //点击图片切换角色
-        $("#start-menu #player1-img").click(function(){
-            root.player1Id = (root.player1Id +1)%6;
-            $('#start-menu #player1-img').attr('src', `/static/images/allPlayers/${root.player1Id}.png`) 
-        })
-
-        $("#overMenu button").click(function(){
-            overMenu.hide();
-            startMenu.show();
-           $(`#${root.id} .kof-head`).remove();
-           $(`#${root.id} canvas`).remove();
-        //    GAME_OBJECTS = [];
-           clearGameObjects();
-          
-        })
+        this.addStartMenu();
+        this.addIntroPage();
+        this.addOverMenu();
         this.setStartMenuCss();
         this.setIntroCss();
         this.setOverMenuCss();
     }
 
+    addStartMenu(){
+         //开始菜单页
+         this.startMenu = $(`
+         <div id="start-menu">
+             <h1>大乱斗</h1>
+             <!-- 角色头像 --> 
+             <img src="/static/images/allPlayers/${this.root.player0Id}.png" id="player0-img" alt="角色0图片">
+             <img src="/static/images/allPlayers/${this.root.player1Id}.png" id="player1-img" alt="角色1图片">
+             <!-- 选择按钮 --> 
+             <div id='menu'>
+                 <button id="select-background-btn">切换背景</button>
+                 <button id="intro-btn">游戏介绍</button>
+                 <button id ="start-btn">开始游戏</button>
+             </div>
+         </div>`
+         )
+
+         this.root.$kof.append(this.startMenu);
+         this.startMenu.show();
+
+         let outer = this;
+           // 游戏介绍按钮
+        $("#menu #intro-btn").click(function () {
+            outer.intro.show();
+        })
+
+        // 开始游戏按钮
+        $("#menu #start-btn").click(function () {
+            $('#start-menu #menu').hide();
+            outer.root.startGame();
+            outer.startMenu.fadeOut(1000);
+        });
+
+        //切换背景
+        $("#menu #select-background-btn").click(function(){
+            outer.root.bgId = (outer.root.bgId+1)%5;
+            $('#start-menu').css({
+                "background-image": `url("/static/images/background/${outer.root.bgId}.gif")`
+            })    
+            
+        })
+
+         //点击图片切换角色
+         $("#start-menu #player0-img").click(function(){
+            outer.root.player0Id = (outer.root.player0Id +1)%6;
+            $('#start-menu #player0-img').attr('src', `/static/images/allPlayers/${outer.root.player0Id}.png`) 
+        })
+        //点击图片切换角色
+        $("#start-menu #player1-img").click(function(){
+            outer.root.player1Id = (outer.root.player1Id +1)%6;
+            $('#start-menu #player1-img').attr('src', `/static/images/allPlayers/${outer.root.player1Id}.png`) 
+        })
+
+    }
+
+    addIntroPage(){
+         //介绍页面
+        this.intro = $(` 
+         <!-- 游戏介绍 -->
+         <div id="intro">
+             <h2>游戏介绍</h2>
+             <p>
+                 简单的双人对战游戏<br>
+                 点击头像可切换角色<br>
+                 <br>
+             </p>
+             <button>X</button>
+         </div>`)
+
+         this.root.$kof.append(this.intro);
+         this.intro.hide();
+
+         let outer = this;
+           //关闭游戏介绍页面按钮
+        $('#intro button').click(function () {
+            outer.intro.hide();
+            outer.startMenu.show();
+        })
+ 
+    }
+
+    addOverMenu(){
+        //结束游戏界面
+        this.overMenu = $(`
+        <!-- 结束菜单 -->
+        <div id="overMenu">
+            <h2>玩家左获胜</h2>
+            <button class="back">返 回</button>
+        </div>
+        `)
+        this.root.$kof.append(this.overMenu);
+        this.overMenu.hide();
+
+        let outer = this;
+        $("#overMenu button").click(function(){
+            outer.overMenu.hide();
+            outer.startMenu.show();
+            $('#start-menu #menu').show();
+            $(`#${outer.root.id} .kof-head`).remove();
+            $(`#${outer.root.id} canvas`).remove();
+            clearGameObjects();
+        })
+    }
     setStartMenuCss(){    
         //整个菜单
         $(`#${this.root.id} #start-menu`).css({
@@ -210,7 +222,6 @@ export class Menu{
         "font-size": "20px",
     })
     }
-
     setOverMenuCss(){
         $(`#${this.root.id} #overMenu`).css({
             "position": "absolute",

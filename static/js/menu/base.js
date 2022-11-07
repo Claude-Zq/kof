@@ -109,7 +109,7 @@ export class Menu{
         </div>
         `)
         this.root.$kof.append(this.overMenu);
-        this.overMenu.show();
+        this.overMenu.hide();
 
         let outer = this;
         $("#overMenu button").click(function(){

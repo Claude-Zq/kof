@@ -42,62 +42,27 @@ export class GameMap extends GameObject{
             "position": "absolute",
         })
 
-
-// #kof>.kof-head {
-//     width: 100%;
-//     height: 80px;
-//     position: absolute;
-//     top: 0;
-//     display: flex;
-//     align-items: center;
-// }
         $('.kof-head').css({
             "width":"100%",
-            "height":"8%",
+            "height":"80px",
             "position":"absolute",
             "top":"0",
             "display":"flex",
             "align-items":"center",
         })
 
-// #kof>.kof-head>.kof-head-hp-0 {
-//     height: 40px;
-//     width: calc(50% - 60px);
-//     margin-left: 20px;
-//     border: white 5px solid;
-//     border-right: none;
-//     box-sizing: border-box;
-// }
-
         $('.kof-head-hp-0').css({
-        "width":"45%",
-        "height": "100%",
+        "width":"calc(50% - 60px)",
+        "height": "40px",
         "margin-left":"20px",
         "border":"white 5px solid",
         "border-right":"none",
         "box-sizing":"border-box",
         })
 
-
-
-// #kof>.kof-head>.kof-head-timer {
-//     height: 60px;
-//     width: 80px;
-//     background-color: orange;
-//     border: white 5px solid;
-//     box-sizing: border-box;
-//     color: white;
-//     font-size: 30px;
-//     font-weight: 800;
-//     text-align: center;
-//     line-height: 50px;
-//     user-select: none;
-// }
-        
-
     $('.kof-head-timer').css({
-        "height":"100%",
-        "width":"10%",
+        "height":"60px",
+        "width":"80px",
         "background-color":"orange",
         "border":"white 5px solid",
         "box-sizing":"border-box",
@@ -105,34 +70,19 @@ export class GameMap extends GameObject{
         "font-size":"30px",
         "font-weight":"800",
         "text-align":"center",
-        "line-height":"60px",
+        "line-height":"50px",
         "user-select":"none",
     })
 
-    // #kof>.kof-head>.kof-head-hp-1 {
-    //     height: 40px;
-    //     width: calc(50% - 60px);
-    //     border: white 5px solid;
-    //     border-left: none;
-    //     box-sizing: border-box;
-    // }
-
     $('.kof-head-hp-1').css({
-        "height":"100%",
-        "width":"45%",
+        "height":"40px",
+        "width":"calc(50% - 60px)",
         "margin-right":"20px",
         "border":"white 5px solid",
         "box-sizing":"border-box",
         "border-left":"none",
     })
 
-
-// #kof>.kof-head>.kof-head-hp-0>div {
-//     background-color: red;
-//     height: 100%;
-//     width: 100%;
-//     float: right;
-// }
     $(`.kof-head-hp-0>div`).css({
         "background-color":"red",
         "height":"100%",
@@ -140,25 +90,11 @@ export class GameMap extends GameObject{
         "float":"right",
     })
 
-
-// #kof>.kof-head>.kof-head-hp-1>div {
-//     background-color: red;
-//     height: 100%;
-//     width: 100%;
-// }
     $(`.kof-head-hp-1>div`).css({
         "background-color":"red",
         "height":"100%",
         "width":"100%",
     })
-
-
-// #kof>.kof-head>.kof-head-hp-0>div>div {
-//     background-color: lightgreen;
-//     height: 100%;
-//     width: 100%;
-//     float: right;
-// }
 
     $(`.kof-head-hp-0>div>div`).css({
         "background-color":"lightgreen",
@@ -167,11 +103,6 @@ export class GameMap extends GameObject{
         "float":"right",
     })
 
-// #kof>.kof-head>.kof-head-hp-1>div>div {
-//     background-color: lightgreen;
-//     height: 100%;
-//     width: 100%;
-// }
     $(`.kof-head-hp-1>div>div`).css({
         "background-color":"lightgreen",
         "height":"100%",
@@ -179,12 +110,6 @@ export class GameMap extends GameObject{
     })
 
     }
-
-
-    start(){
-
-    }
-
     update(){
         this.timeLeft -= this.timedelta;
         if (this.timeLeft < 0) {
@@ -193,7 +118,9 @@ export class GameMap extends GameObject{
             if (a.status !== "die" && b.status !== "die") {
                 if(a.hp > b.hp){
                     b.die();
-                }else {
+                }else if(a.hp === b.hp){
+                    this.root.endGame();
+                }else{
                     a.die();
                 }
             }

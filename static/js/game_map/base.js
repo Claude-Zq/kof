@@ -5,6 +5,8 @@ export class GameMap extends GameObject{
         super();
 
         this.root = root;
+
+        //加入画布
         this.$canvas = $(`<canvas  width="1280" height="720" tabindex=0 ></canvas>`);
         this.ctx = this.$canvas[0].getContext('2d');
         this.root.$kof.append(this.$canvas);
@@ -12,6 +14,7 @@ export class GameMap extends GameObject{
 
         this.timeLeft = 60000;
 
+        //加入计时器和血条
         this.root.$kof.append($(`
         <div class="kof-head">
                 <div class="kof-head-hp-0">
@@ -32,6 +35,10 @@ export class GameMap extends GameObject{
         ))
 
         this.$timer = this.root.$kof.find(".kof-head-timer");
+
+    }
+
+    start(){
 
         $(this.root.$kof).css({
             "width": "1280",

@@ -35,12 +35,12 @@ export class KOF{
             case 5: player0 = new Yuri(this,{id:0,x:200,y:0});break;
         }
        switch(this.player1Id){
-            case 0: player1 = new Karakuri(this,{id:1,x:window.innerWidth-120-200,y:0});break;
-            case 1: player1 = new Tsunade(this,{id:1,x:window.innerWidth-120-200,y:0});break;
-            case 2: player1 = new Ryo(this,{id:1,x:window.innerWidth-120-200,y:0});break;
-            case 3: player1 = new ZhuGeliang(this,{id:1,x:window.innerWidth-120-200,y:0});break;
-            case 4: player1 = new RedRobot(this,{id:1,x:window.innerWidth-120-200,y:0});break;
-            case 5: player1 = new Yuri(this,{id:1,x:window.innerWidth-120-200,y:0});break;
+            case 0: player1 = new Karakuri(this,{id:1,x:1280-120-200,y:0});break;
+            case 1: player1 = new Tsunade(this,{id:1,x:1280-120-200,y:0});break;
+            case 2: player1 = new Ryo(this,{id:1,x:1280-120-200,y:0});break;
+            case 3: player1 = new ZhuGeliang(this,{id:1,x:1280-120-200,y:0});break;
+            case 4: player1 = new RedRobot(this,{id:1,x:1280-120-200,y:0});break;
+            case 5: player1 = new Yuri(this,{id:1,x:1280-120-200,y:0});break;
        }
         this.players = [player0,player1];
     }

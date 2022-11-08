@@ -5,7 +5,7 @@ export class GameMap extends GameObject{
         super();
 
         this.root = root;
-        this.$canvas = $(`<canvas  width=${window.innerWidth.toString()} height=${window.innerHeight.toString()} tabindex=0 ></canvas>`);
+        this.$canvas = $(`<canvas  width="1280" height="720" tabindex=0 ></canvas>`);
         this.ctx = this.$canvas[0].getContext('2d');
         this.root.$kof.append(this.$canvas);
         this.$canvas.focus();
@@ -34,8 +34,8 @@ export class GameMap extends GameObject{
         this.$timer = this.root.$kof.find(".kof-head-timer");
 
         $(this.root.$kof).css({
-            "width":window.innerWidth,
-            "height":window.innerHeight,
+            "width": "1280",
+            "height": "720",
             "background-image": `url(/static/images/background/${root.bgId}.gif)`,
             "background-size": "100% 100%",
             "background-position": "top",

@@ -124,8 +124,8 @@ export class Menu{
     setStartMenuCss(){    
         //整个菜单
         $(`#${this.root.id} #start-menu`).css({
-            "width":window.innerWidth,
-            "height":window.innerHeight,
+            "width":1280,
+            "height":720,
             "background-image": `url("/static/images/background/${this.root.bgId}.gif")`,
             "background-size": "100% 100%",
             "background-position": "top",

@@ -32,7 +32,6 @@ export class Karakuri extends Player{
                 obj.loaded = true;
             }
         }
-        console.log('load success');
     }
 
     idle(){
@@ -96,12 +95,12 @@ export class Karakuri extends Player{
         this.defense = 0;
         
         this.y -= 200;
-        this.vy = -2000;
+        this.vy = -1500;
 
         //动画相关
         this.offset_x = 0;
         this.offset_y = 0;
-        this.frameCurrentCount = 10;
+        this.frameCurrentCount = 15;
         this.animationRate = 5;  
     }
 
@@ -311,35 +310,39 @@ export class Karakuri extends Player{
             }
 
         }else if(this.status ==="forward"){
-           if(w){
+            if(f){
+                this.sweep();
+            }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
         
         }else if(this.status === "backward"){
-            if(w){
+            if(f){
+                this.sweep();
+            }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
@@ -347,35 +350,35 @@ export class Karakuri extends Player{
         }else if(this.status === "jump"){
             if(this.y === this.ctx.canvas.height-this.height-GROUND_HEIGHT){
                 this.idle();
-            }
-            
-        }else if(this.status === "jumpAttack"){
-            if(this.isAnimationOver()){
-                this.idle();
             }else{
-                if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 100){
-                    let you = this.root.players[1-this.id];
-                    this.attackCount = 0;
-                    if(you.defense< this.damage){
-                        you.attacked();
-                    }
-                    
-                }
-            }
+                if(d){
+                     this.vx = 400;
+                 }else if(a){
+                    this.vx = -400;
+                 }
+             }
+            
         }else if(this.status === "squat"){
            
-            if(w){
-                this.idle();
-            }else if(d){
-                if(this.direction === 1) this.forward();
-                else this.backward();
-            }else if(a){
-                if(this.direction === 1) this.backward();
-                else this.forward();
-            }else if(space){
-                this.squatAttack();
-            }else if(this.frameCurrentCount >= 55){
+            if(!s){
+                if(f){
+                    this.sweep();
+                }else if(w){
+                    this.idle();
+                }else if(d){
+                    if(this.direction === 1) this.forward();
+                    else this.backward();
+                }else if(a){
+                    if(this.direction === 1) this.backward();
+                    else this.forward();
+                }
+            }
+            if(this.frameCurrentCount >= 55){
                 this.frameCurrentCount = 35;
+            }
+
+            if(space){
+                this.squatAttack();
             }
             
         }else if(this.status === "squatAttack"){
@@ -394,7 +397,7 @@ export class Karakuri extends Player{
             }
         }else if (this.status === "sweep"){
             if(this.isAnimationOver()){
-                this.idle();d
+                this.idle();
             }else {
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 9 && this.frameCurrentCount <= 110){
                     let you = this.root.players[1-this.id];
@@ -409,8 +412,6 @@ export class Karakuri extends Player{
 
             if(this.isAnimationOver()){
                 this.idle();
-            }else if(w && space){
-                this.jumpAttack();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 50 && this.frameCurrentCount <= 135){
                     let you = this.root.players[1-this.id];

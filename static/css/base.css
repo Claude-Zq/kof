@@ -1,15 +1,164 @@
 * {
-    padding: 0;
-    margin: 0;
+    margin:0;
+    padding:0;
     /* 禁用 鼠标选中文本 */
+    moz-user-select: -moz-none; 
+    -moz-user-select: none; 
+    -o-user-select:none; 
+    -khtml-user-select:none; 
+    -webkit-user-select:none; 
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    -ms-user-select:none; 
+    user-select:none;
 }
 
-h1{
-    margin-top:auto,
+
+#container{
+    width: 1280px;
+    margin:0 auto;
+    color:#fff;
 }
+
+#kof>#start-menu{
+    width: 1280px;
+    height: 720px;
+    background-image:url("/static/images/background/1.gif");
+    background-size: 100% 100%;
+    background-position: top;
+    position: absolute;
+}
+
+/*游戏标题*/
+#kof>#start-menu>h1{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 60px;
+    color:#f5f7a7;
+    
+}
+
+
+#kof>#start-menu>#menu{
+    width: 350px;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    
+}
+
+#menu>button{
+    width: 300px;
+    height: 60px;
+    background-color: #4f78cc;
+    border-radius: 20px;
+    color:#f5f7a7;
+    border: solid;
+    margin: 20px 0;
+}
+
+#menu>button:hover{
+    background-color: #0e42a9;
+}
+
+
+#kof>#start-menu>#player0-img{
+    box-sizing: border-box;
+    height: 200px;
+    width: 200px;
+    position:absolute;
+    left:0px;
+    top:0px;
+    border:4mm ridge rgba(211, 220, 50, .6);
+    border-radius: 0 20px 20px 20px;
+
+}
+
+#kof>#start-menu>#player1-img{
+    box-sizing: border-box;
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    right:0px;
+    top:0px;
+    border:4mm ridge rgba(211, 220, 50, .6);
+    border-radius: 20px  0 20px 20px;
+}
+
+
+#kof>#intro{
+    box-sizing: border-box;
+    position: relative;
+    margin: 0 auto;
+    background-color: #4f78cc;
+    width: 600px;
+    height: 710px;
+    border:thick double #f5f7a7;
+    border-radius: 30px;
+    text-align: center;
+    /* padding:40px; */
+    color:#fff;
+    overflow:scroll;
+    line-height: 2.5;
+
+}
+
+
+#kof>#intro>button{
+    position: absolute;
+    right:10px;
+    top: 0px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border:none;
+    font-weight: 800px;
+    font-size:50px;
+    color:#f5f7a7;
+    background-color: transparent;
+}
+
+#kof>#intro>p{
+    font-size: 20px;
+}
+
+/*结束菜单*/
+#kof>#overMenu{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    background-color: #4f78cc;
+    width: 250px;
+    height: 200px;
+    border:solid;
+    border-radius: 20px;
+    padding:40px;
+    color:#fff
+}
+
+
+#kof>#overMenu>h2{
+    text-align: center;
+    font-size: 40px;
+    color:#4f78cc,
+}
+
+/*结束菜单按钮*/
+#kof>#overMenu>button{
+    color:white;
+    background-color: #cca700;
+    width: 250px;
+    height: 50px;
+    border-radius: 20px;
+    margin: 90px 0 0 0;
+    border: none;
+}
+
+
+#kof>#overMenu>button:hover{
+    background-color: #eec40a;
+    transition: 100ms;
+}
+

@@ -33,7 +33,6 @@ export class Ryo extends Player{
                 obj.loaded = true;
             }
         }
-        console.log('load success');
     }
 
 
@@ -98,8 +97,8 @@ export class Ryo extends Player{
         this.height = 220;
         this.defense = 0;
         
-        this.y -= 200;
-        this.vy = -2000;
+       this.y -= 200;
+        this.vy = -1700;
 
         //动画相关
         this.offset_x = 0;
@@ -120,14 +119,14 @@ export class Ryo extends Player{
         this.width = 140;
         this.height = 220;
         this.defense = 10;
-        
-        this.vy = -2100;
+
+        this.vy = -1700;
 
         //动画相关
         this.offset_x = -50;
         this.offset_y = -100;
-        this.frameCurrentCount = 0;
-        this.animationRate = 3.5;   
+        this.frameCurrentCount = 10;
+        this.animationRate = 3.3;   
     }
     squat(){
         this.status = "squat";
@@ -197,7 +196,7 @@ export class Ryo extends Player{
          this.frameCurrentCount = 0;
          this.offset_x = -100;
          this.offset_y =  5;
-         this.animationRate = 7;
+         this.animationRate = 3;
     }
 
     die(){
@@ -355,50 +354,53 @@ export class Ryo extends Player{
             }
             else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }
 
         }else if(this.status ==="forward"){
             if(f){
-                this.tigerDragonDance();
-            }else if(w){
+                this.standDefense();
+            }
+            else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
-        
         }else if(this.status === "backward"){
-            if(w){
+            if(f){
+                this.standDefense();
+            }
+            else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
@@ -406,11 +408,17 @@ export class Ryo extends Player{
         }else if(this.status === "jump"){
             if(this.y === this.ctx.canvas.height-this.height-GROUND_HEIGHT){
                 this.idle();
+            }else{
+               if(d){
+                    this.vx = 400;
+                }else if(a){
+                   this.vx = -400;
+                }
             }
             
         }else if(this.status === "jumpAttack"){
             if(this.isAnimationOver()){
-                this.idle();
+               this.status = "jump";
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 100){
                     let you = this.root.players[1-this.id];
@@ -422,28 +430,32 @@ export class Ryo extends Player{
                 }
             }
         }else if(this.status === "squat"){
-            if(w){
-                this.jump();
-            }else if(d){
-                if(this.direction === 1) this.forward();
-                else this.backward();
-            }else if(a){
-                if(this.direction === 1) this.backward();
-                else this.forward();
-            }else if(s){
-                this.squatDefense();
-            }else if(space){
-                this.normalAttack();
-            }
-        }else if(this.status === "squatDefense"){
             if(!s){
+                if(w){
+                    this.jump();
+                }else if(d){
+                    if(this.direction === 1) this.forward();
+                    else this.backward();
+                }else if(a){
+                    if(this.direction === 1) this.backward();
+                    else this.forward();
+                }else if(space){
+                    this.normalAttack();
+                }
+            }
+            if(f){
+                this.squatDefense();
+            }
+            
+        }else if(this.status === "squatDefense"){
+            if(!f){
                 this.squat();
             }
 
         }else if (this.status === "standDefense"){
             if(!f){
                 this.idle();
-            }else if(s){
+            }else if(space){
                 this.tigerDragonDance();
             }
         }else if(this.status === "normalAttack"){
@@ -453,6 +465,8 @@ export class Ryo extends Player{
                 this.jumpAttack();
             }else if(d && space){
                 this.overLordFist();
+            }else if(f && space){
+                this.tigerDragonDance();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 50){
                     let you = this.root.players[1-this.id];

@@ -90,6 +90,7 @@
 #kof>#intro{
     box-sizing: border-box;
     position: relative;
+    top:5px;
     margin: 0 auto;
     background-color: #4f78cc;
     width: 600px;

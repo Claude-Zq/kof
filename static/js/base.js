@@ -14,10 +14,11 @@ export class KOF{
     constructor(id){
         this.$kof = $('#'+id);
         this.bgId = 5; //背景图片Id
-        this.player0Id = 2; //玩家0的角色Id
-        this.player1Id = 3; //晚间1的角色Id
+        this.player0Id = 5; //玩家0的角色Id
+        this.player1Id = 4; //晚间1的角色Id
         this.gameResult = "平局"; //游戏结果
         this.id = id;
+        this.gameStatus = "end";
         this.menu = new Menu(this); 
     }
 
@@ -43,9 +44,11 @@ export class KOF{
             case 5: player1 = new Yuri(this,{id:1,x:1280-120-200,y:0});break;
        }
         this.players = [player0,player1];
+        this.gameStatus = "started";
     }
 
     endGame(){
+        this.gameStatus = "end";
         if(this.players[0].hp > this.players[1].hp){
             this.gameResult = "左边获胜";
         }else if(this.players[0].hp === this.players[1].hp){

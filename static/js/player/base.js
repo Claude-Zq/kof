@@ -146,6 +146,13 @@ export class Player extends GameObject{
     }
 
     update(){
+        console.log(this.root.gameStatus);
+        if(this.pressedKeys.has("escape")){
+            this.root.endGame();
+        }
+        if(this.root.gameStatus != "started"){
+            return;
+        }
         this.updateStatus();
         this.updateMove();
         this.updateDirection();
@@ -153,20 +160,20 @@ export class Player extends GameObject{
     }
 
     render(){
-        this.ctx.fillStyle = "green";
-        this.ctx.fillRect(this.x,this.y,this.width,this.height);
+        // this.ctx.fillStyle = "green";
+        // this.ctx.fillRect(this.x,this.y,this.width,this.height);
 
-        this.ctx.fillStyle = "red";
-        if(this.direction===1){
-            this.ctx.fillRect(this.x+this.attackArea.x1,this.y+this.attackArea.y1,
-                this.attackArea.x2-this.attackArea.x1,
-                this.attackArea.y2 - this.attackArea.y1,
-            )
-        }else {
-            this.ctx.fillRect(this.x +this.width- this.attackArea.x2,this.y+this.attackArea.y1,
-                this.attackArea.x2-this.attackArea.x1,
-                this.attackArea.y2 - this.attackArea.y1)
-        }
+        // this.ctx.fillStyle = "red";
+        // if(this.direction===1){
+        //     this.ctx.fillRect(this.x+this.attackArea.x1,this.y+this.attackArea.y1,
+        //         this.attackArea.x2-this.attackArea.x1,
+        //         this.attackArea.y2 - this.attackArea.y1,
+        //     )
+        // }else {
+        //     this.ctx.fillRect(this.x +this.width- this.attackArea.x2,this.y+this.attackArea.y1,
+        //         this.attackArea.x2-this.attackArea.x1,
+        //         this.attackArea.y2 - this.attackArea.y1)
+        // }
         
         let obj =this.animations.get(this.status);
         if(obj && obj.loaded){

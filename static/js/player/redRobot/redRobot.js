@@ -339,51 +339,54 @@ export class RedRobot extends Player{
 
            if(f){
                 this.standDefense();
-            }
-            else if(w){
+            }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }
 
         }else if(this.status ==="forward"){
-           if(w){
+            if(f){
+                this.standDefense();
+            }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
         
         }else if(this.status === "backward"){
-            if(w){
+            if(f){
+                this.standDefense();
+            }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
@@ -391,7 +394,13 @@ export class RedRobot extends Player{
         }else if(this.status === "jump"){
             if(this.y === this.ctx.canvas.height-this.height-GROUND_HEIGHT){
                 this.idle();
-            }
+            }else{
+                if(d){
+                     this.vx = 400;
+                 }else if(a){
+                    this.vx = -400;
+                 }
+             }
             
         }else if(this.status === "jumpAttack"){
             if(this.isAnimationOver()){
@@ -426,20 +435,23 @@ export class RedRobot extends Player{
                 }
             }
         }else if(this.status === "squat"){
-           
-            if(w){
-                this.idle();
-            }else if(d){
-                if(this.direction === 1) this.forward();
-                else this.backward();
-            }else if(a){
-                if(this.direction === 1) this.backward();
-                else this.forward();
-            }else if(space){
-                this.squatAttack();
-            }else if(f){
+            if(!s){
+                if(w){
+                    this.jump();
+                }else if(d){
+                    if(this.direction === 1) this.forward();
+                    else this.backward();
+                }else if(a){
+                    if(this.direction === 1) this.backward();
+                    else this.forward();
+                }else if(space){
+                    this.squatAttack();    
+                }
+            }    
+            if(f){
                 this.squatDefense();
-            }else if(this.frameCurrentCount >= 55){
+            }
+            if(this.frameCurrentCount >= 55){
                 this.frameCurrentCount = 35;
             }
             

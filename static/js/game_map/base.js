@@ -116,6 +116,9 @@ export class GameMap extends GameObject{
 
     }
     update(){
+        if(this.root.gameStatus !== "started"){
+            return;
+        }
         this.timeLeft -= this.timedelta;
         if (this.timeLeft < 0) {
             this.timeLeft = 0;

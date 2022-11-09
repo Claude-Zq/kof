@@ -66,14 +66,14 @@ export class Tsunade extends Player{
         this.width = 120;
         this.height = 170; 
 
-        this.vx = this.direction*400;
+        this.vx = this.direction*300;
         this.vy = 0;
         this.defense = 0;
 
         //动画相关
         this.offset_x = -40;
         this.offset_y = -10;
-        this.animationRate = 6;
+        this.animationRate = 5;
     }
 
     backward(){
@@ -82,13 +82,13 @@ export class Tsunade extends Player{
         this.height = 170; 
         this.defense = 0;
 
-        this.vx = -this.direction*400;
+        this.vx = -this.direction*300;
         this.vy = 0;
 
         //动画相关
         this.offset_x = -40;
         this.offset_y =  -10;
-        this.animationRate = 6; 
+        this.animationRate = 5; 
     }
 
     jump(){
@@ -98,7 +98,7 @@ export class Tsunade extends Player{
         this.defense = 0;
         
         this.y -= 200;
-        this.vy = -2000;
+        this.vy = -1700;
 
         //动画相关
         this.offset_x = -40;
@@ -120,7 +120,6 @@ export class Tsunade extends Player{
         this.height = 170; 
         this.defense = 10;
        
-        this.y -= 400;
         this.vy = -1000;
 
         //动画相关
@@ -221,7 +220,7 @@ export class Tsunade extends Player{
          this.frameCurrentCount = 0;
          this.offset_x = -50;
          this.offset_y =  -90;
-         this.animationRate = 6;
+         this.animationRate = 3;
     }
 
     die(){
@@ -276,7 +275,7 @@ export class Tsunade extends Player{
         this.offset_x = -60;
         this.offset_y = -80;
         this.frameCurrentCount = 0;
-        this.animationRate = 16;  
+        this.animationRate = 12;  
     }
 
     
@@ -327,34 +326,35 @@ export class Tsunade extends Player{
 
            if(f){
                 this.standDefense();
-            }
-            else if(w){
+           }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }
 
         }else if(this.status ==="forward"){
-           if(w){
+            if(f){
+                this.standDefense();
+            }else if(w){
                 this.jump();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
@@ -379,6 +379,14 @@ export class Tsunade extends Player{
         }else if(this.status === "jump"){
             if(this.y === this.ctx.canvas.height-this.height-GROUND_HEIGHT){
                 this.idle();
+            }else{
+               if(d){
+                    this.vx = 400;
+                }else if(a){
+                   this.vx = -400;
+                }else if(space){
+                    this.jumpAttack();
+                }
             }
             
         }else if(this.status === "jumpAttack"){
@@ -396,24 +404,27 @@ export class Tsunade extends Player{
                 }
             }
         }else if(this.status === "squat"){
-            if(w){
-                this.idle();
-            }else if(d){
-                if(this.direction === 1) this.forward();
-                else this.backward();
-            }else if(a){
-                if(this.direction === 1) this.backward();
-                else this.forward();
-            }else if(s){
-                this.squatDefense();
-            }else if(space){
-                this.normalAttack();
-            }
-            else if(this.frameCurrentCount >= 40){
-                this.frameCurrentCount = 39;
-           }
-        }else if(this.status === "squatDefense"){
             if(!s){
+                if(w){
+                this.idle();
+                }else if(f){
+                    this.squatDefense();
+                }else if(d){
+                    if(this.direction === 1) this.forward();
+                    else this.backward();
+                }else if(a){
+                    if(this.direction === 1) this.backward();
+                    else this.forward();
+                }else if(space){
+                    this.normalAttack();
+                }
+            }
+            if(this.frameCurrentCount === 40){
+                this.frameCurrentCount--;
+            }
+            
+        }else if(this.status === "squatDefense"){
+            if(!f){
                 this.squat();
             }
         }else if (this.status === "standDefense"){
@@ -426,7 +437,7 @@ export class Tsunade extends Player{
                 this.idle();
             }else if(w && space){
                 this.jumpAttack();
-            }else if(d && space){
+            }else if(f && space){
                 this.mustKill();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 30 && this.frameCurrentCount  <= 40 ){
@@ -440,8 +451,6 @@ export class Tsunade extends Player{
         }else if(this.status === "mustKill"){
             if(this.isAnimationOver()){
                 this.idle();
-            }else if(w && space){
-                this.jumpAttack();
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 40 && this.frameCurrentCount  <= 90 ){
                     this.attackCount = 0;
@@ -453,13 +462,12 @@ export class Tsunade extends Player{
             }
         }else if(this.status === "attacked"){
            if(this.isAnimationOver()){
-                
                 if(this.hp <= 0){
                     this.die();
                 }else{
                     this.idle();
                 }
-                
+
            }
         }else if(this.status === "die"){
            if(this.frameCurrentCount === 160){

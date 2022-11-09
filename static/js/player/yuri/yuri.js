@@ -376,22 +376,25 @@ d
                 }
             }
         }else if(this.status === "squat"){
-            if(w){
+            if(!s){
+                if(w){
                 this.idle();
-            }else if(f){
-                this.squatDefense();
-            }else if(d){
-                if(this.direction === 1) this.forward();
-                else this.backward();
-            }else if(a){
-                if(this.direction === 1) this.backward();
-                else this.forward();
-            }else if(space){
-                this.normalAttack();
+                }else if(f){
+                    this.squatDefense();
+                }else if(d){
+                    if(this.direction === 1) this.forward();
+                    else this.backward();
+                }else if(a){
+                    if(this.direction === 1) this.backward();
+                    else this.forward();
+                }else if(space){
+                    this.normalAttack();
+                }
             }
-            else if(this.frameCurrentCount === 30){
+            if(this.frameCurrentCount === 30){
                 this.frameCurrentCount--;
-           }
+            }
+            
         }else if(this.status === "squatDefense"){
             if(!f){
                 this.squat();

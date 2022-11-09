@@ -120,7 +120,7 @@ export class Yuri extends Player{
         this.defense = 10;
         
         this.vy = -1700;
-d
+
         //动画相关
         this.offset_x = -50;
         this.offset_y = -100;
@@ -356,7 +356,7 @@ d
             if(this.y === this.ctx.canvas.height-this.height-GROUND_HEIGHT){
                 this.idle();
             }else{
-               if(d){d
+               if(d){
                     this.vx = 400;
                 }else if(a){
                    this.vx = -400;

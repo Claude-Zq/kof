@@ -1,6 +1,5 @@
 import { Player } from "../base.js";
 import { GIF } from "../../utils/gif.js";
-import { GROUND_HEIGHT } from "../../base.js";
 
 export class ZhuGeliang extends Player{
     constructor(root,info){
@@ -33,7 +32,6 @@ export class ZhuGeliang extends Player{
                 obj.loaded = true;
             }
         }
-        console.log('load success');
     }
 
 
@@ -58,7 +56,7 @@ export class ZhuGeliang extends Player{
         this.offset_y =  5;
         this.animationRate = 6;
 
-        
+
     }
 
     forward(){
@@ -68,13 +66,11 @@ export class ZhuGeliang extends Player{
         this.height = 200; 
 
         this.vx = this.direction*400;
-        this.vy = 0;
         this.defense = 0;
-
         //动画相关
         this.offset_x = -50;
         this.offset_y = 10;
-        this.animationRate = 6;
+        this.animationRate = 5;
     }
 
     backward(){
@@ -84,8 +80,7 @@ export class ZhuGeliang extends Player{
         this.defense = 0;
 
         this.vx = -this.direction*400;
-        this.vy = 0;
-
+    
         //动画相关
         this.offset_x = -50;
         this.offset_y =  -10;
@@ -94,7 +89,7 @@ export class ZhuGeliang extends Player{
     jumpAttack(){
         this.status = "jumpAttack";
         this.attackCount = 1;
-        this.damage = 30;
+        this.damage = 20;
         this.attackArea = {
             x1 : 120,
             y1 : -40 ,
@@ -123,7 +118,7 @@ export class ZhuGeliang extends Player{
             x2 : 430,
             y2 : 80,
         }
-        this.damage = 40;
+        this.damage = 5;
         this.defense = 30;
         this.width = 180;
         this.height = 200; 
@@ -135,7 +130,7 @@ export class ZhuGeliang extends Player{
         this.frameCurrentCount = 0;
         this.offset_x = -50;
         this.offset_y = 0;
-        this.animationRate = 6;
+        this.animationRate = 10;
 
     }
 
@@ -343,35 +338,39 @@ export class ZhuGeliang extends Player{
                 this.normalAttack();
             }
         }else if(this.status ==="forward"){
-           if(w){
-               
+            if(f){
+                this.standDefense();
+            }else if(space){
+                this.normalAttack();
+            }else if(w){
+                this.thunderAttack();
+            }else if(s){
+                this.swordUnity();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(s){
-                this.swordUnity();
-            }else if(space){
-                this.normalAttack();
             }else{
                 this.idle();
             }
         
         }else if(this.status === "backward"){
-            if(w){
-               
+            if(f){
+                this.standDefense();
+            }else if(space){
+                this.normalAttack();
+            }else if(w){
+                this.thunderAttack();
+            }else if(s){
+                this.swordUnity();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(s){
-                this.swordUnity();
-            }else if(space){
-                this.normalAttack();
             }else{
                 this.idle();
             }
@@ -391,7 +390,9 @@ export class ZhuGeliang extends Player{
                 }
             }
         }else if (this.status === "standDefense"){
-            if(!f){
+            if(space){
+                this.fireAttack();
+            }else if(!f){
                 this.idle();
             }
         }else if(this.status === "normalAttack"){

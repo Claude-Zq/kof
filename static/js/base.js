@@ -14,11 +14,11 @@ export class KOF{
     constructor(id){
         this.$kof = $('#'+id);
         this.bgId = 5; //背景图片Id
-        this.player0Id = 1; //玩家0的角色Id
-        this.player1Id = 0; //晚间1的角色Id
+        this.player0Id = 2; //玩家0的角色Id
+        this.player1Id = 3; //晚间1的角色Id
         this.gameResult = "平局"; //游戏结果
         this.id = id;
-        this.menu = new Menu(this);
+        this.menu = new Menu(this); 
     }
 
     startGame(){

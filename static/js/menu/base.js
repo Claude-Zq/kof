@@ -29,19 +29,19 @@ export class Menu{
 
          let outer = this;
            // 游戏介绍按钮
-        $("#menu #intro-btn").click(function () {
+       this.startMenu.find("#intro-btn").click(function () {
             outer.intro.show();
         })
 
         // 开始游戏按钮
-        $("#menu #start-btn").click(function () {
+        this.startMenu.find("#start-btn").click(function () {
             $('#start-menu #menu').hide();
             outer.root.startGame();
             outer.startMenu.fadeOut(1000);
         });
 
         //切换背景
-        $("#menu #select-background-btn").click(function(){
+        this.startMenu.find("#select-background-btn").click(function(){
             outer.root.bgId = (outer.root.bgId+1)%5;
             $('#start-menu').css({
                 "background-image": `url("/static/images/background/${outer.root.bgId}.gif")`
@@ -50,12 +50,12 @@ export class Menu{
         })
 
          //点击图片切换角色
-         $("#start-menu #player0-img").click(function(){
+         this.startMenu.find("#player0-img").click(function(){
             outer.root.player0Id = (outer.root.player0Id +1)%6;
             $('#start-menu #player0-img').attr('src', `/static/images/allPlayers/${outer.root.player0Id}.png`) 
         })
         //点击图片切换角色
-        $("#start-menu #player1-img").click(function(){
+        this.startMenu.find("#player1-img").click(function(){
             outer.root.player1Id = (outer.root.player1Id +1)%6;
             $('#start-menu #player1-img').attr('src', `/static/images/allPlayers/${outer.root.player1Id}.png`) 
         })
@@ -89,7 +89,7 @@ export class Menu{
 
          let outer = this;
            //关闭游戏介绍页面按钮
-        $('#intro button').click(function () {
+        this.intro.find('button').click(function () {
             outer.intro.hide();
             outer.startMenu.show();
         })
@@ -109,7 +109,7 @@ export class Menu{
         this.overMenu.hide();
 
         let outer = this;
-        $("#overMenu button").click(function(){
+        this.overMenu.find("button").click(function(){
             outer.overMenu.hide();
             outer.startMenu.show();
             $('#start-menu #menu').show();
@@ -118,7 +118,7 @@ export class Menu{
             clearGameObjects();
         })
     }
-
+    
     endGame(){
         $(`#${this.root.id} #overMenu h2`).text(this.root.gameResult);
         $(`#${this.root.id} #overMenu`).show();

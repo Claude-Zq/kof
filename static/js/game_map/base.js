@@ -41,8 +41,6 @@ export class GameMap extends GameObject{
     start(){
 
         $(this.root.$kof).css({
-            "width": "1280",
-            "height": "720",
             "background-image": `url(/static/images/background/${this.root.bgId}.gif)`,
             "background-size": "100% 100%",
             "background-position": "top",

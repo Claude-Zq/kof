@@ -33,7 +33,6 @@ export class Yuri extends Player{
                 obj.loaded = true;
             }
         }
-        console.log('load success');
     }
 
 
@@ -68,7 +67,6 @@ export class Yuri extends Player{
         this.height = 200;
 
         this.vx = this.direction*400;
-        this.vy = 0;
         this.defense = 0;
 
         //动画相关
@@ -84,7 +82,7 @@ export class Yuri extends Player{
         this.defense = 0;
 
         this.vx = -this.direction*400;
-        this.vy = 0;
+
 
         //动画相关
         this.offset_x = 0;
@@ -99,7 +97,7 @@ export class Yuri extends Player{
         this.defense = 0;
         
         this.y -= 200;
-        this.vy = -2000;
+        this.vy = -1700;
 
         //动画相关
         this.offset_x = 0;
@@ -108,7 +106,7 @@ export class Yuri extends Player{
         this.animationRate = 8;  
     }
 
-    jumpAttack(){
+    jumpAttack(){ 
         this.status = "jumpAttack";
         this.attackCount = 1;
         this.attackArea = {
@@ -121,13 +119,13 @@ export class Yuri extends Player{
         this.height = 140;
         this.defense = 10;
         
-        this.vy = -2100;
-
+        this.vy = -1700;
+d
         //动画相关
         this.offset_x = -50;
         this.offset_y = -100;
-        this.frameCurrentCount = 0;
-        this.animationRate = 3.5;   
+        this.frameCurrentCount = 3;
+        this.animationRate = 2.4;   
     }
     squat(){
         this.status = "squat";
@@ -197,7 +195,7 @@ export class Yuri extends Player{
          this.frameCurrentCount = 0;
          this.offset_x = -50;
          this.offset_y =  5;
-         this.animationRate = 7;
+         this.animationRate = 3;
     }
 
     die(){
@@ -303,8 +301,11 @@ export class Yuri extends Player{
 
            if(f){
                 this.standDefense();
-            }
-            else if(w){
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
+            }else if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -312,14 +313,16 @@ export class Yuri extends Player{
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }
 
         }else if(this.status ==="forward"){
-           if(w){
+            if(f){
+                this.standDefense();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
+            }else if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -327,16 +330,18 @@ export class Yuri extends Player{
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
             }else{
                 this.idle();
             }
         
         }else if(this.status === "backward"){
-            if(w){
+            if(f){
+                this.standDefense();
+            }else if(space){
+                this.normalAttack();
+            }else if(s){
+                this.squat();
+            }else if(w){
                 this.jump();
             }else if(d){
                 if(this.direction === 1) this.forward();
@@ -344,22 +349,22 @@ export class Yuri extends Player{
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(space){
-                this.normalAttack();
-            }else if(s){
-                this.squat();
-            }else{
+            }else {
                 this.idle();
             }
-
         }else if(this.status === "jump"){
             if(this.y === this.ctx.canvas.height-this.height-GROUND_HEIGHT){
                 this.idle();
+            }else{
+               if(d){d
+                    this.vx = 400;
+                }else if(a){
+                   this.vx = -400;
+                }
             }
-            
         }else if(this.status === "jumpAttack"){
             if(this.isAnimationOver()){
-                this.idle();
+                this.status = "jump";
             }else{
                 if(this.attackCount > 0 && this.isSuccessfuleAttack() && this.frameCurrentCount >= 25 && this.frameCurrentCount <= 100){
                     let you = this.root.players[1-this.id];
@@ -373,14 +378,14 @@ export class Yuri extends Player{
         }else if(this.status === "squat"){
             if(w){
                 this.idle();
+            }else if(f){
+                this.squatDefense();
             }else if(d){
                 if(this.direction === 1) this.forward();
                 else this.backward();
             }else if(a){
                 if(this.direction === 1) this.backward();
                 else this.forward();
-            }else if(s){
-                this.squatDefense();
             }else if(space){
                 this.normalAttack();
             }
@@ -388,7 +393,7 @@ export class Yuri extends Player{
                 this.frameCurrentCount--;
            }
         }else if(this.status === "squatDefense"){
-            if(!s){
+            if(!f){
                 this.squat();
             }
         }else if (this.status === "standDefense"){

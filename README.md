@@ -7,7 +7,7 @@ Brawl is a pure JS implementation of the front-end small game.
 
 ## cert
 
-[The 1st Code Nuggets Programming Challenge] (https://juejin.cn/challenge/1/result) third place.
+[The 1st Code Nuggets Programming Challenge](https://juejin.cn/challenge/1/result) third place.
 
 ![certificate](./static/images/cert/certificate.svg)
 

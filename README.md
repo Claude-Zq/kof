@@ -13,4 +13,4 @@ Brawl is a pure JS implementation of the front-end small game.
 
 ## License
 
-FreeCar is distributed under the GNU License, version 3.0.
+Brawl is distributed under the GNU License, version 3.0.
